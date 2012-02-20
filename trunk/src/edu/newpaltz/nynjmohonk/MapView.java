@@ -1,6 +1,6 @@
 package edu.newpaltz.nynjmohonk;
 
-import android.R;
+//import android.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

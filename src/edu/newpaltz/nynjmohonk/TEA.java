@@ -1,4 +1,4 @@
-/* * (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>*/
+/*  (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>*/
 
 package edu.newpaltz.nynjmohonk;
 

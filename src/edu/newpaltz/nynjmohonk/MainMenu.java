@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import android.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

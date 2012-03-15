@@ -24,5 +24,5 @@
     <string name="npcs_website">www.newpaltz.edu/compsci</string>
     <string name="new_database">Get New Database</string>
     <string name="database_url">https://wyvern.cs.newpaltz.edu/~n02486417/map_app/maps.sqlite</string>
-    <string name="">https://wyvern.cs.newpaltz.edu/~n02486417/map_app/</string>
+    <string name="NP_database_url">https://wyvern.cs.newpaltz.edu/~n02486417/map_app/newpaltzcampus_locs.sqlite</string>
 </resources>

@@ -32,7 +32,7 @@ public class SplashScreen extends Activity {
 	    ImageView myImg= (ImageView) findViewById(R.id.npcslogo);
 	    myImg.setOnClickListener(new View.OnClickListener() {
 	                public void onClick(View view) {
-	                	t = Toast.makeText(SplashScreen.this, "Created by Conor Branagan and Jacquelyn Sagaas of the SUNY New Paltz Computer Science Department", Toast.LENGTH_LONG);
+	                	t = Toast.makeText(SplashScreen.this, "Created by Conor Branagan and Jacquelyn Sagaas of the SUNY New Paltz Computer Science Department. Enhanced by Jonathan Davin of the SUNY New Paltz Computer Science Department", Toast.LENGTH_LONG);
 						t.show();
 	                }
 	            });

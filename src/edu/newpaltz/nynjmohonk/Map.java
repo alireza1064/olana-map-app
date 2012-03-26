@@ -433,6 +433,8 @@ public class Map implements Parcelable {
         return mdb.selectFromDatabase(query, null);		
 	}
 	
+	
+	
 	/**
 	 * Static method to get all downloaded maps from the SQLite database
 	 * @param c The current application context

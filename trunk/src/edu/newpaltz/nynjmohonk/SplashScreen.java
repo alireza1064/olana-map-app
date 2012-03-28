@@ -1,6 +1,8 @@
 package edu.newpaltz.nynjmohonk;	
 
 //import android.R;
+import android.util.Log;
+import android.util.Log.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 
 public class SplashScreen extends Activity {	
+	
 	//protected boolean _active = true, continueOn = true;
 	protected int _splashTime = 5000;
 	Toast t;
@@ -19,7 +22,7 @@ public class SplashScreen extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.splash);
-
+	   Log.d("OnCreate in SplashScreen","Going into the MainMenu");
 	    new Handler().postDelayed(new Runnable(){
 	    	@Override
 	    	public void run() {

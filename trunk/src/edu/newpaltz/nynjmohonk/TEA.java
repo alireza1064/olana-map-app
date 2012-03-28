@@ -1,8 +1,10 @@
 /*  (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>*/
 
 package edu.newpaltz.nynjmohonk;
-
+import android.util.Log;
+import android.util.Log.*;
 public class TEA {
+	
 	private final static int SUGAR = 0x9E3779B9;
 	private final static int CUPS  = 32;
 	private final static int UNSUGAR = 0xC6EF3720;
@@ -32,6 +34,7 @@ public class TEA {
 	 * @return the encrypted text
 	 */
 	public byte[] encrypt(byte[] clear) {
+		
 		int paddedSize = ((clear.length/8) + (((clear.length%8)==0)?0:1)) * 2;
 		int[] buffer = new int[paddedSize + 1];
 		buffer[0] = clear.length;
@@ -46,13 +49,16 @@ public class TEA {
 	 * @return the decrypted text
 	 */
 	public byte[] decrypt(byte[] crypt) {
+		Log.d("decrypt", "Starting Decrypt");
 		assert crypt.length % 4 == 0;
 		assert (crypt.length / 4) % 2 == 1;
 		int[] buffer = new int[crypt.length / 4];
 		pack(crypt, buffer, 0);
 		unbrew(buffer);
 		crypt = null;
+		Log.d("decrypt","decrypt finished");
 		return unpack(buffer, 1, buffer[0]);
+		
 	}
 
 	private void brew(int[] buf) {
@@ -116,6 +122,7 @@ public class TEA {
 	}
 	
 	private byte[] unpack(int[] src, int srcOffset, int destLength) {
+		
 		assert destLength <= (src.length - srcOffset) * 4;
 		byte[] dest = new byte[destLength];
 		int i = srcOffset;
@@ -129,6 +136,8 @@ public class TEA {
 			}
 		}
 		src = null;
+		Log.d("unpack","unpack finished length of returned array is");
+		Log.d("unpack",""+dest.length);
 		return dest;
 	}
 	

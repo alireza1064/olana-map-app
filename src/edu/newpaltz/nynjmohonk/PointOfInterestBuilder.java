@@ -37,6 +37,8 @@ public class PointOfInterestBuilder  {
 		compState = 0;
 	}
 	
+	//this config will only work for a DB table with a single row!!!!
+	
 	public void setVal(int column, int val){
 		switch(column){
 		case 0: this.id = val; break;

@@ -2,6 +2,7 @@ package edu.newpaltz.nynjmohonk;
 
 
 //import android.R;
+import java.util.logging.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -12,6 +13,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.location.LocationManager;
  * user's location from GPS and generally responding to any events that deal with the map *
  */
 public class MapViewActivity extends Activity {
+	Logger log ;
 	private ProgressDialog d = null;
 	private Map myMap;
 	private MapView myMapView;
@@ -63,9 +66,9 @@ public class MapViewActivity extends Activity {
         // Initialize and turn on the compass
         cl = new CompassListener(this, myMapView);
         myMapView.setCompass(cl);
-        
+        Log.d("MapViewActivity","Entering the map decrytion process");
         myMap.decryptImage(this); // Decrypt the image on disk
-        
+        Log.d("MapViewActivity", "Map decrypting complete, continuing");
     	//byte [] decryptedFile = myMap.getDecryptedImage(this);
     	try {
     		//mapBitmap = BitmapFactory.decodeByteArray(decryptedFile, 0, decryptedFile.length);

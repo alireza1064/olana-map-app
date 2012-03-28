@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import android.util.Log;
+import android.util.Log.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +33,7 @@ import android.widget.Button;
  * view a map, exit, or (eventually) change settings.
  */
 public class MainMenu extends Activity {
+
 	private Button openMap, closeApp, downloadMaps;
 	private AlertDialog mapChoice;
 	private ProgressDialog d = null;
@@ -65,7 +68,8 @@ public class MainMenu extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int item) {
-								// Show dialog symbolizing loading of image (or downloading of image)
+				Log.d("OnCreate in MainMenu","Going into the MapViewActivity");		
+				// Show dialog symbolizing loading of image (or downloading of image)
 								mapChoice.dismiss();
 								currentMap = results.get(item);
 								Intent i = new Intent(MainMenu.this, MapViewActivity.class);

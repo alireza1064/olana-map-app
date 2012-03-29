@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#2e8b57"
+    android:background="#000099"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
@@ -11,12 +11,13 @@
 		android:background="#ffffff"
 		android:layout_gravity="center"
 		/>
-	<ImageView
-		android:layout_width="200px"
-		android:layout_height="200px"
-		android:background="#3cb371"
-		android:layout_gravity="center"
-		/>
+	<ImageView 
+	    android:src="@drawable/compass"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+	    />	
+	
     <TextView  
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
@@ -26,13 +27,21 @@
     	android:paddingLeft="140px"
     	android:text="@string/name"
     	/>
+    <ImageView 
+        android:layout_width="75px"
+        android:layout_height="100px"
+        android:background="#ffffff"        
+      	android:layout_gravity="bottom|left"
+        />
+
     <ImageView
-    	android:id="@+id/npcslogo"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:paddingLeft="10px"
-    	android:paddingBottom="5px"
-    	android:layout_gravity="bottom|left"
-    	android:src="@drawable/nplogo"
-    	/>
+        android:id="@+id/npcslogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5px"
+        android:paddingLeft="5px"
+        android:src="@drawable/nplogo"
+        android:layout_gravity="bottom|left"
+         />
+    
 </FrameLayout>

@@ -223,7 +223,7 @@ public class Map implements Parcelable {
 	public boolean isDownloaded() {
 		try {
 			// File exists, set image load state as loaded
-			myContext.openFileInput(getFilename() + ".enc");
+			myContext.openFileInput(getFilename() );  //changed here
 		} catch (FileNotFoundException e) {
 			return false;
 		}
@@ -235,10 +235,10 @@ public class Map implements Parcelable {
 	 * then encrypt the image file
 	 */
 	public void loadImage() {
-		tea = new TEA(getEkey().getBytes());	
+	//	tea = new TEA(getEkey().getBytes());	
 		try {
 			// File exists, set image load state as loaded
-			myContext.openFileInput(getFilename() + ".enc");
+			myContext.openFileInput(getFilename() ); 							//changed here
 			imageLoadState = 1; // image is done loading!
 			return;
 		} catch (FileNotFoundException e) {
@@ -256,8 +256,8 @@ public class Map implements Parcelable {
 				URLConnection ucon = myURL.openConnection();
 				InputStream is = ucon.getInputStream();
 				BufferedInputStream bis = new BufferedInputStream(is);
-	
-				FileOutputStream f = myContext.openFileOutput(getFilename() + ".enc", Context.MODE_WORLD_READABLE);
+	//changed line below
+				FileOutputStream f = myContext.openFileOutput(getFilename() , Context.MODE_WORLD_READABLE);
 				int nRead;
 	
 				byte[] data = new byte[1024];
@@ -282,12 +282,12 @@ public class Map implements Parcelable {
 	
 	/**
 	 * Decrypt the image so that it can be read in as a bitmap
-	 */
+	 *//*
 	public byte[] getDecryptedImage(Context c) {
 		tea = new TEA(getEkey().getBytes());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try {
-			final InputStream is = c.openFileInput(getFilename() + ".enc");
+			final InputStream is = c.openFileInput(getFilename());  //changed here
 			byte[] b = new byte[1024];
 			int bytesRead;
 			
@@ -316,12 +316,12 @@ public class Map implements Parcelable {
 	/**
 	 * Temporarily decrpyts the image on the disk so that we can send the filename to our
 	 * native Bitmap decoder
-	 */
+	 *//*
 	public void decryptImage(Context c) {
 		tea = new TEA(getEkey().getBytes());
 		try {
 			final FileOutputStream os = c.openFileOutput(getFilename(), Context.MODE_WORLD_READABLE);
-			final InputStream is = c.openFileInput(getFilename() + ".enc");
+			final InputStream is = c.openFileInput(getFilename() );		//changed here
 			byte[] b = new byte[1024];
 			int bytesRead;
 			
@@ -344,7 +344,7 @@ public class Map implements Parcelable {
 			// Do something
 		}
 		
-	}
+	}*/
 	
 	/**
 	 * Required by Parceable type. An inner class that creates a parcable from the Map object

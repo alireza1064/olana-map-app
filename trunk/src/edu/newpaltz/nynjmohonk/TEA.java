@@ -49,7 +49,12 @@ public class TEA {
 	 * @return the decrypted text
 	 */
 	public byte[] decrypt(byte[] crypt) {
-		Log.d("decrypt", "Starting Decrypt");
+		
+		byte[]qikPass = new byte[crypt.length];
+		qikPass = crypt;
+		return qikPass;
+		
+		/*Log.d("decrypt", "Starting Decrypt");
 		assert crypt.length % 4 == 0;
 		assert (crypt.length / 4) % 2 == 1;
 		int[] buffer = new int[crypt.length / 4];
@@ -57,7 +62,7 @@ public class TEA {
 		unbrew(buffer);
 		crypt = null;
 		Log.d("decrypt","decrypt finished");
-		return unpack(buffer, 1, buffer[0]);
+		return unpack(buffer, 1, buffer[0]);*/
 		
 	}
 
@@ -122,7 +127,7 @@ public class TEA {
 	}
 	
 	private byte[] unpack(int[] src, int srcOffset, int destLength) {
-		
+		//destLength = 1024;
 		assert destLength <= (src.length - srcOffset) * 4;
 		byte[] dest = new byte[destLength];
 		int i = srcOffset;

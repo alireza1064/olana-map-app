@@ -282,7 +282,9 @@ public class Map implements Parcelable {
 	
 	/**
 	 * Decrypt the image so that it can be read in as a bitmap
-	 *//*
+	 */
+	
+	
 	public byte[] getDecryptedImage(Context c) {
 		tea = new TEA(getEkey().getBytes());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -316,7 +318,9 @@ public class Map implements Parcelable {
 	/**
 	 * Temporarily decrpyts the image on the disk so that we can send the filename to our
 	 * native Bitmap decoder
-	 *//*
+	 */
+	/*
+	
 	public void decryptImage(Context c) {
 		tea = new TEA(getEkey().getBytes());
 		try {
@@ -344,7 +348,8 @@ public class Map implements Parcelable {
 			// Do something
 		}
 		
-	}*/
+	}
+	*/
 	
 	/**
 	 * Required by Parceable type. An inner class that creates a parcable from the Map object

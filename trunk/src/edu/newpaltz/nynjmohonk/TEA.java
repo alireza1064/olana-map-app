@@ -1,8 +1,7 @@
 /*  (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>*/
 
 package edu.newpaltz.nynjmohonk;
-import android.util.Log;
-import android.util.Log.*;
+
 public class TEA {
 	
 	private final static int SUGAR = 0x9E3779B9;
@@ -141,8 +140,7 @@ public class TEA {
 			}
 		}
 		src = null;
-		Log.d("unpack","unpack finished length of returned array is");
-		Log.d("unpack",""+dest.length);
+		
 		return dest;
 	}
 	

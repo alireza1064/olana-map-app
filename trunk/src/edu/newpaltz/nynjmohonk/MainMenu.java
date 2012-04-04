@@ -68,7 +68,7 @@ public class MainMenu extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int item) {
-				Log.d("OnCreate in MainMenu","Going into the MapViewActivity");		
+				//Log.d("OnCreate in MainMenu","Going into the MapViewActivity");		
 				// Show dialog symbolizing loading of image (or downloading of image)
 								mapChoice.dismiss();
 								currentMap = results.get(item);
@@ -133,7 +133,7 @@ public class MainMenu extends Activity {
 			t2.start();       	
 		} else {
 			// Check for a new database (maybe do in background eventually?)
-			d = ProgressDialog.show(this, "", "Checking for new database...");
+			//d = ProgressDialog.show(this, "", "Checking for new database...");
 			Thread t3 = new Thread(newDatabaseCheck);
 			t3.start();
 		}

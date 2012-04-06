@@ -114,7 +114,7 @@ public class MapViewActivity extends Activity {
     		// Inform the user that we ran out of memory.
     		//decryptedFile = null;
 			AlertDialog.Builder builder = new AlertDialog.Builder(MapViewActivity.this);
-			builder.setMessage("This app has run out of memory.\nPlease force close the app and settings then restart.")
+			builder.setMessage("This app has run out of memory.\nPlease force close the app in settings then restart.")
 				.setNeutralButton("Go Back", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.dismiss();

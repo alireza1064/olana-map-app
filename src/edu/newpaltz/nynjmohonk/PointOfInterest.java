@@ -38,7 +38,7 @@ public class PointOfInterest  {
 		compState = 0;
 	}
 	
-	//this config will only work for a DB table with a single row!!!!
+	
 	
 	public void setVal(int column, int val){
 		switch(column){
@@ -64,5 +64,24 @@ public class PointOfInterest  {
 		default: break;
 		}
 	}
+	
+	public double getLat(){
+		return lat;
+	}
+	
+	public double getLong(){
+		return longe;
+	}
 
+	public int getID(){
+		return id;
+	}
+	
+	public int getRadius(){
+		return radius;
+	}
+	
+	public String getLocName(){
+		return loc_name;
+	}
 }

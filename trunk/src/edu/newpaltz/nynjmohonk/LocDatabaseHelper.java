@@ -8,13 +8,14 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+//import android.location.*;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,19 +28,20 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * A simple SQLite helper class that copies, connects to and reads from our database of maps.
  *
  */
-public class LocationDatabaseHelper extends SQLiteOpenHelper {
+public class LocDatabaseHelper extends SQLiteOpenHelper {
+	//private Location loc;
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
-	private static LocationDatabaseHelper myDBConnection;
+	private static LocDatabaseHelper myDBConnection;
 	
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
 	 * to the SQLite database file based on the application context
 	 * @param context The current application context
 	 */
-	public LocationDatabaseHelper(Context context) {
+	public LocDatabaseHelper(Context context) {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
@@ -50,9 +52,9 @@ public class LocationDatabaseHelper extends SQLiteOpenHelper {
 	 * @param context The current application context
 	 * @return A connection to the database
 	 */
-	public static synchronized LocationDatabaseHelper getDBInstance(Context context) {
+	public static synchronized LocDatabaseHelper getDBInstance(Context context) {
 		if (myDBConnection == null) {
-			myDBConnection = new LocationDatabaseHelper(context);
+			myDBConnection = new LocDatabaseHelper(context);
 		}
 		return myDBConnection;
 	}
@@ -166,31 +168,35 @@ public class LocationDatabaseHelper extends SQLiteOpenHelper {
 	 * @return An ArrayList of map objects corresponding to our SELECT query
 	 */
 	// Select query function 
-	public ArrayList<Map> selectFromDatabase(String query, String[] selectionArgs) {
-		ArrayList<Map> results = new ArrayList<Map>();
+	public void generatePoints(String query, String[] selectionArgs) {
+
+		//query = "SELECT * FROM NPC_locs";
+		
+	//	ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
-				Map m = new Map(myContext);
+				PointOfInterest p = new PointOfInterest(myContext);
 				for(int i = 0; i < c.getColumnCount(); i++) {
 					if(c.getString(i) != null) {
-						if(i >= 5 && i <= 8) {
+						if(i ==2 || i==3) {
 							// For longitude values we want to use getDouble() to preserve accuracy
-							m.setVal(i, c.getDouble(i));
-						} else if(i == 11 || i == 12) {
-							m.setVal(i, c.getInt(i));
+							p.setVal(i, c.getDouble(i));
+						} else if(i == 0 || i == 4) {
+							p.setVal(i, c.getInt(i));
 						} else {
-							m.setVal(i, c.getString(i));
+							p.setVal(i, c.getString(i));
 						}
 					}
 				}
-				results.add(m);
+				
+			//	results.add(p);
 			} while(c.moveToNext());
 		}
 		c.close();
 		c.deactivate();
 		myDatabase.close();
-		return results;
+		//return results;
 	}
 	
 	private static int dbLoadState = 0;

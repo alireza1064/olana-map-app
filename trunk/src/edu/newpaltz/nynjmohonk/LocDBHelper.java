@@ -11,10 +11,12 @@ import java.net.URL;
 //import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.LocationManager;
 //import android.location.*;
 
 import org.apache.http.HttpEntity;
@@ -28,7 +30,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * A simple SQLite helper class that copies, connects to and reads from our database of maps.
  *
  */
-public class LocDatabaseHelper extends SQLiteOpenHelper {
+public class LocDBHelper extends SQLiteOpenHelper {
 	//private Location loc;
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
@@ -41,7 +43,7 @@ public class LocDatabaseHelper extends SQLiteOpenHelper {
 	 * to the SQLite database file based on the application context
 	 * @param context The current application context
 	 */
-	public LocDatabaseHelper(Context context) {
+	public LocDBHelper(Context context) {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
@@ -168,7 +170,7 @@ public class LocDatabaseHelper extends SQLiteOpenHelper {
 	 * @return An ArrayList of map objects corresponding to our SELECT query
 	 */
 	// Select query function 
-	public void generatePoints(String query, String[] selectionArgs) {
+	public void generatePoints(String query, String[] selectionArgs, LocationManager loc) {
 
 		//query = "SELECT * FROM NPC_locs";
 		
@@ -189,7 +191,7 @@ public class LocDatabaseHelper extends SQLiteOpenHelper {
 						}
 					}
 				}
-				
+				loc.addProximityAlert(p.getLat(), p.getLong(),p.getRadius(),120000, new Intent(LocDatabaseHelper.this,));
 			//	results.add(p);
 			} while(c.moveToNext());
 		}

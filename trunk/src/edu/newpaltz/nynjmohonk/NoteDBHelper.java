@@ -31,19 +31,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * A simple SQLite helper class that copies, connects to and reads from our database of maps.
  *
  */
-public class NotificationDatabaseHelper extends SQLiteOpenHelper {
+public class NoteDBHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
-	private static NotificationDatabaseHelper myDBConnection;
+	private static NoteDBHelper myDBConnection;
 	
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
 	 * to the SQLite database file based on the application context
 	 * @param context The current application context
 	 */
-	public NotificationDatabaseHelper(Context context) {
+	public NoteDBHelper(Context context) {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
@@ -55,9 +55,9 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
 	 * @param context The current application context
 	 * @return A connection to the database
 	 */
-	public static synchronized NotificationDatabaseHelper getDBInstance(Context context) {
+	public static synchronized NoteDBHelper getDBInstance(Context context) {
 		if (myDBConnection == null) {
-			myDBConnection = new NotificationDatabaseHelper(context);
+			myDBConnection = new NoteDBHelper(context);
 		}
 		return myDBConnection;
 	}

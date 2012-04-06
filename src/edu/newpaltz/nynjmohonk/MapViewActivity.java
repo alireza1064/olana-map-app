@@ -210,6 +210,9 @@ public class MapViewActivity extends Activity {
         // Turn on the LocationManager to figure out current location
         LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         
+        //could place the point generator here
+        
+        
         // Define a location listener and the events that go with it    
         locationListener = new LocationListener() {
         	public void onLocationChanged(Location location) {

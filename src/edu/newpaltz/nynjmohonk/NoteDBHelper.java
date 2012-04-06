@@ -33,7 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  */
 public class NoteDBHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = ""; 
-	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
+	private static final String DB_NAME = "notification_info.sqlite";
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
 	private static NoteDBHelper myDBConnection;
@@ -177,31 +177,28 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	 * @return An ArrayList of map objects corresponding to our SELECT query
 	 */
 	// Select query function 
-	public ArrayList<Map> selectFromDatabase(String query, String[] selectionArgs) {
-		ArrayList<Map> results = new ArrayList<Map>();
+	public void generateNotes(String query, String[] selectionArgs) {
+		//ArrayList<Map> results = new ArrayList<Map>();
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
-				Map m = new Map(myContext);
+				NoteBuilder n = new NoteBuilder(myContext);
 				for(int i = 0; i < c.getColumnCount(); i++) {
 					if(c.getString(i) != null) {
-						if(i >= 5 && i <= 8) {
-							// For longitude values we want to use getDouble() to preserve accuracy
-							m.setVal(i, c.getDouble(i));
-						} else if(i == 11 || i == 12) {
-							m.setVal(i, c.getInt(i));
+						if(i == 0) {
+							n.setVal(i, c.getInt(i));
 						} else {
-							m.setVal(i, c.getString(i));
+							n.setVal(i, c.getString(i));
 						}
 					}
 				}
-				results.add(m);
+			//	results.add(m);
 			} while(c.moveToNext());
 		}
 		c.close();
 		c.deactivate();
 		myDatabase.close();
-		return results;
+		//return results;
 	}
 	
 	

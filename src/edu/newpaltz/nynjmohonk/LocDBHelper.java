@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 //import java.util.ArrayList;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,7 +37,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
-	private static LocDatabaseHelper myDBConnection;
+	private static LocDBHelper myDBConnection;
 	
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
@@ -54,9 +55,9 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	 * @param context The current application context
 	 * @return A connection to the database
 	 */
-	public static synchronized LocDatabaseHelper getDBInstance(Context context) {
+	public static synchronized LocDBHelper getDBInstance(Context context) {
 		if (myDBConnection == null) {
-			myDBConnection = new LocDatabaseHelper(context);
+			myDBConnection = new LocDBHelper(context);
 		}
 		return myDBConnection;
 	}
@@ -163,18 +164,20 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	
 	
 	/**
-	 * Returns an ArrayList of Map objects that are returned by the SQL SELECT query. This method assumes
-	 * that the select query is accessing the Map table 
+	 * Gets, creates and sets the data of the points of interest and 
+	 * then generates a proximity alert based on that data
 	 * @param query The SQL SELECT query on the Map table
 	 * @param selectionArgs A list of selection arguments, if applicable
-	 * @return An ArrayList of map objects corresponding to our SELECT query
+	 * @param a location manager to generate the proximity alerts
 	 */
-	// Select query function 
+	
 	public void generatePoints(String query, String[] selectionArgs, LocationManager loc) {
 
 		//query = "SELECT * FROM NPC_locs";
-		
 	//	ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
+		
+		int pendIntFlag = 1073741824;  // indicated single usage only!
+		
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
@@ -191,7 +194,10 @@ public class LocDBHelper extends SQLiteOpenHelper {
 						}
 					}
 				}
-				loc.addProximityAlert(p.getLat(), p.getLong(),p.getRadius(),120000, new Intent(LocDatabaseHelper.this,));
+				loc.addProximityAlert(p.getLat(), p.getLong(),p.getRadius(),-1, 
+						PendingIntent.getActivity(myContext, 0, new Intent(myContext,NoteDBHelper.class)
+							.putExtra(p.getLocName(), p.getLocName()),pendIntFlag ));
+				
 			//	results.add(p);
 			} while(c.moveToNext());
 		}

@@ -162,6 +162,12 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	
+
+	
+	
+	
+	
+	
 	
 	/**
 	 * Returns an ArrayList of Map objects that are returned by the SQL SELECT query. This method assumes
@@ -197,6 +203,12 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		myDatabase.close();
 		return results;
 	}
+	
+	
+	
+	
+	
+	
 	
 	private static int dbLoadState = 0;
 

@@ -24,15 +24,16 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
-public class PointOfInterestBuilder  {
+public class PointOfInterest  {
 	private int id, radius;
 	private double lat, longe;
 	private String loc_name;
 	private Context myContext;
 	private int compState;
+	private Intent i;
 	
 	
-	public PointOfInterestBuilder(Context c){
+	public PointOfInterest(Context c){
 		myContext = c;
 		compState = 0;
 	}

@@ -47,6 +47,7 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
+	
 	}
 
 	/**

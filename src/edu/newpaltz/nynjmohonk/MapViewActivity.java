@@ -66,18 +66,25 @@ public class MapViewActivity extends Activity {
         // Initialize and turn on the compass
         cl = new CompassListener(this, myMapView);
         myMapView.setCompass(cl);
+        
+        
         //Log.d("MapViewActivity","Entering the map decrytion process");
       //  myMap.decryptImage(this); // Decrypt the image on disk
         //Log.d("MapViewActivity", "Map decrypting complete, continuing");
     	//byte [] decryptedFile = myMap.getDecryptedImage(this);
+        
+        
     	try {
     		//mapBitmap = BitmapFactory.decodeByteArray(decryptedFile, 0, decryptedFile.length);
+    		
     		mapBitmap = Bitmap.createBitmap(myMap.getWidth(), myMap.getHeight(), Bitmap.Config.RGB_565);
     		//decryptedFile = null;
-        	myMapView.setImageBitmap(mapBitmap);
+        	
+    		myMapView.setImageBitmap(mapBitmap);
         	myMapView.setMapObj(myMap);
             // Max/min values are relative to the image and NOT to the numbers themselves
-            minLongitude = myMap.getMinLongitude();
+           
+        	minLongitude = myMap.getMinLongitude();
             maxLatitude = myMap.getMaxLatitude();
             latPerPixel = myMap.getLatPerPixel();
             lonPerPixel = myMap.getLonPerPixel();

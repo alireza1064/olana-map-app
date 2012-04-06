@@ -16,8 +16,27 @@ public class PointOfInterest  {
 	
 	
 	public PointOfInterest(Context c){
-		myContext = c;
-		
+		myContext = c;		
+	}
+	
+	public double getLat(){
+		return lat;
+	}
+	
+	public double getLong(){
+		return longe;
+	}
+
+	public int getID(){
+		return id;
+	}
+	
+	public int getRadius(){
+		return radius;
+	}
+	
+	public String getLocName(){
+		return loc_name;
 	}
 	
 	
@@ -47,23 +66,5 @@ public class PointOfInterest  {
 		}
 	}
 	
-	public double getLat(){
-		return lat;
-	}
 	
-	public double getLong(){
-		return longe;
-	}
-
-	public int getID(){
-		return id;
-	}
-	
-	public int getRadius(){
-		return radius;
-	}
-	
-	public String getLocName(){
-		return loc_name;
-	}
 }

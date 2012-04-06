@@ -34,9 +34,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class NoteDBHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "notification_info.sqlite";
-	private final Context myContext;
+	private static Context myContext;
 	private SQLiteDatabase myDatabase;	
 	private static NoteDBHelper myDBConnection;
+	
+	
+	public static void main(String[] args){
+		NoteDBHelper note = new NoteDBHelper(myContext);
+	}
+	
 	
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
@@ -47,6 +53,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
+		this.generateNotes("SELECT * FROM NP_loc_info", null);
 	
 	}
 
@@ -178,11 +185,15 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	 */
 	// Select query function 
 	public void generateNotes(String query, String[] selectionArgs) {
+		
+		//query = "SELECT * FROM NP_loc_info";
+	
 		//ArrayList<Map> results = new ArrayList<Map>();
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
 				NoteBuilder n = new NoteBuilder(myContext);
+			
 				for(int i = 0; i < c.getColumnCount(); i++) {
 					if(c.getString(i) != null) {
 						if(i == 0) {
@@ -193,6 +204,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 					}
 				}
 			//	results.add(m);
+				
 			} while(c.moveToNext());
 		}
 		c.close();

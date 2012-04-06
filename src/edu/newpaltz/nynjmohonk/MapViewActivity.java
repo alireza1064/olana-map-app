@@ -210,7 +210,10 @@ public class MapViewActivity extends Activity {
         // Turn on the LocationManager to figure out current location
         LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         
-        //could place the point generator here
+        
+        // point of interest generator  call
+        LocDBHelper loc = new LocDBHelper(MapViewActivity.this);
+        loc.generatePoints("SELECT * FROM NPC_locs",null,locationManager);
         
         
         // Define a location listener and the events that go with it    

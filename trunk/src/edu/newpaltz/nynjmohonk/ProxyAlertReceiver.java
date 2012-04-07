@@ -21,33 +21,43 @@ public class ProxyAlertReceiver extends BroadcastReceiver {
 
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(Context context, final Intent intent) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(myContext) ;
-		builder.setMessage(""+NoteDBHelper.getNoteBuilder().getShort_info()).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+		try{
+			builder.setMessage(""+NoteDBHelper.getNoteBuilderByName(NoteDBHelper.getNoteStore(),intent.getStringExtra(
+			"loc_name")).getShort_info()).setNegativeButton("OK", new DialogInterface.OnClickListener() {
 
 
-			public void onClick(DialogInterface dialog, int which) {
-				alert.dismiss();
+				public void onClick(DialogInterface dialog, int which) {
+					alert.dismiss();
 
-			}
-		}).setPositiveButton("More info", new DialogInterface.OnClickListener() {
+				}
+			}).setPositiveButton("More info", new DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
-				
-				//Intent moreInfo = new Intent(Intent.ACTION_VIEW,Uri.parse(""+NoteDBHelper.getNoteBuilder().getLong_info()));
-				webview = new WebView(myContext);
-				webview.getSettings().setJavaScriptEnabled(true);
-				webview.setWebViewClient(new WebViewClient(){
-					public void onReceivedError(WebView web, int errorCode,String description, String failedURL){
-						Toast.makeText(myContext,description,Toast.LENGTH_SHORT).show();
+				public void onClick(DialogInterface dialog, int which) {
+
+					//Intent moreInfo = new Intent(Intent.ACTION_VIEW,Uri.parse(""+NoteDBHelper.getNoteBuilder().getLong_info()));
+					webview = new WebView(myContext);
+					webview.getSettings().setJavaScriptEnabled(true);
+					webview.setWebViewClient(new WebViewClient(){
+						public void onReceivedError(WebView web, int errorCode,String description, String failedURL){
+							Toast.makeText(myContext,description,Toast.LENGTH_SHORT).show();
+						}
+					});
+					try{
+						webview.loadUrl(""+NoteDBHelper.getNoteBuilderByName(NoteDBHelper.getNoteStore(),intent.getStringExtra(
+						"loc_name")).getLong_info());
+					}catch(Exception e){
+						System.err.println(e);
 					}
-				});
-				webview.loadUrl(""+NoteDBHelper.getNoteBuilder().getLong_info());
-				
-			}
-		});
-	}
+				}
+			});
 
+
+		}catch(Exception e){
+			System.err.println(e);
+		}
+	}
 
 
 

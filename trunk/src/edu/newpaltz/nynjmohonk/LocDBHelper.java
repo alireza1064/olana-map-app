@@ -198,7 +198,8 @@ public class LocDBHelper extends SQLiteOpenHelper {
 					}
 				}
 				POIStore[t] = p;
-				proxStore[t] = addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName(),t);
+				//proxStore[t] = 
+				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName(),t);
 				t++;
 			//	results.add(p);
 			} while(c.moveToNext());
@@ -209,7 +210,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		//return results;
 	}
 	
-	public static String addProxyAlert(LocationManager loc, double lat, double longe, 
+	public static void addProxyAlert(LocationManager loc, double lat, double longe, 
 			int radius,Context c, int flag, String loc_name, int timeActivated ){
 		
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
@@ -217,7 +218,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		
 		
 		
-		return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
+		//return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
 	}
 	
 	public static PointOfInterest[] getPOIStore(){

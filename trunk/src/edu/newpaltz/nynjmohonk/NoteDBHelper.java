@@ -40,21 +40,31 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	private static NoteBuilder[] NoteStore;
 	
 	
-	private static String[] proxStore;
+	//private static String[] proxStore;
 	private static NoteBuilder n;
 	
 	
 	public static void main(String[] args){
 		NoteDBHelper note = new NoteDBHelper(myContext);
-		proxStore = LocDBHelper.getProxStore();
+		//proxStore = LocDBHelper.getProxStore();
 		note.generateNotes("SELECT * FROM NP_loc_info", null);
 		
 		
 		
 	}
 	
-	public static NoteBuilder getNoteBuilder(){
-		return n;
+	public static NoteBuilder[] getNoteStore(){
+		return NoteStore;
+	}
+	
+	public static NoteBuilder getNoteBuilderByName(NoteBuilder[] NB, String name){
+		for(int i = 0;i<NB.length;i++){
+			if(NB[i].getName().equals(name)){
+				return NB[i];
+			}
+		}
+		
+		return null;
 	}
 	
 	
@@ -70,6 +80,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		//this.generateNotes("SELECT * FROM NP_loc_info", null);
 	
 	}
+	
+	
 
 	/**
 	 * Gets an instance of MapDatabaseHelper which will be connected to our SQLite database

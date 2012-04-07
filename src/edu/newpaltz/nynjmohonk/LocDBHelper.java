@@ -39,6 +39,8 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase myDatabase;	
 	private static LocDBHelper myDBConnection;
 	private static String proxStore[];
+	private static PointOfInterest[] POIStore;
+	private PointOfInterest p;
 	
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
@@ -182,7 +184,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
-				PointOfInterest p = new PointOfInterest(myContext);
+				 p = new PointOfInterest(myContext);
 				for(int i = 0; i < c.getColumnCount(); i++) {
 					if(c.getString(i) != null) {
 						if(i ==2 || i==3) {
@@ -195,6 +197,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 						}
 					}
 				}
+				POIStore[t] = p;
 				proxStore[t] = addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName(),t);
 				t++;
 			//	results.add(p);
@@ -207,14 +210,18 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	}
 	
 	public static String addProxyAlert(LocationManager loc, double lat, double longe, 
-			int radius,Context c, int flag, String locName, int timeActivated ){
+			int radius,Context c, int flag, String loc_name, int timeActivated ){
 		
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
-				c, 0, new Intent(c,NoteDBHelper.class).putExtra(locName, locName), flag));
+				c, 0, new Intent(c,NoteDBHelper.class).putExtra(loc_name, loc_name), flag));
 		
 		
 		
-		return ""+timeActivated+";"+locName+";"+lat+";"+longe+";"+radius;
+		return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
+	}
+	
+	public static PointOfInterest[] getPOIStore(){
+		return POIStore;
 	}
 	
 	public static String[] getProxStore(){

@@ -209,7 +209,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		myDatabase.close();
 		//return results;
 	}
-	
+	//THIS MIGHT NEED TO BE CHANGED!!! specifically the intent sections
 	public static void addProxyAlert(LocationManager loc, double lat, double longe, 
 			int radius,Context c, int flag, String loc_name, int timeActivated ){
 		

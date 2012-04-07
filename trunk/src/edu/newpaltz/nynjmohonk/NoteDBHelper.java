@@ -39,8 +39,21 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	private static NoteDBHelper myDBConnection;
 	
 	
+	private static String[] proxStore;
+	private static NoteBuilder n;
+	
+	
 	public static void main(String[] args){
 		NoteDBHelper note = new NoteDBHelper(myContext);
+		proxStore = LocDBHelper.getProxStore();
+		
+		
+		
+		
+	}
+	
+	public static NoteBuilder getNoteBuilder(){
+		return n;
 	}
 	
 	
@@ -192,7 +205,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
-				NoteBuilder n = new NoteBuilder(myContext);
+				 n = new NoteBuilder(myContext);
 			
 				for(int i = 0; i < c.getColumnCount(); i++) {
 					if(c.getString(i) != null) {
@@ -304,6 +317,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		dbLoadState = 1;
 		
 	}
+	
+	
 	
 }
 

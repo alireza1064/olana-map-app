@@ -37,6 +37,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	private static Context myContext;
 	private SQLiteDatabase myDatabase;	
 	private static NoteDBHelper myDBConnection;
+	private static NoteBuilder[] NoteStore;
 	
 	
 	private static String[] proxStore;
@@ -46,7 +47,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	public static void main(String[] args){
 		NoteDBHelper note = new NoteDBHelper(myContext);
 		proxStore = LocDBHelper.getProxStore();
-		
+		note.generateNotes("SELECT * FROM NP_loc_info", null);
 		
 		
 		
@@ -66,7 +67,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		DB_PATH = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
-		this.generateNotes("SELECT * FROM NP_loc_info", null);
+		//this.generateNotes("SELECT * FROM NP_loc_info", null);
 	
 	}
 
@@ -200,7 +201,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	public void generateNotes(String query, String[] selectionArgs) {
 		
 		//query = "SELECT * FROM NP_loc_info";
-	
+		int t = 0;
 		//ArrayList<Map> results = new ArrayList<Map>();
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
@@ -217,7 +218,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 					}
 				}
 			//	results.add(m);
-				
+				NoteStore[t]=n;
+				t++;
 			} while(c.moveToNext());
 		}
 		c.close();

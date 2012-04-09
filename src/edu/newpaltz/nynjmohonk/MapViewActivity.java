@@ -2,6 +2,7 @@ package edu.newpaltz.nynjmohonk;
 
 
 //import android.R;
+import java.io.IOException;
 import java.util.logging.*;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -205,15 +206,20 @@ public class MapViewActivity extends Activity {
     /**
      * This turns on the location listener which will listen to events from the GPS and respond to them by
      * updating the location indicator on the map
+     * @throws IOException 
      */
-    private void turnOnLocation() {
+    private void turnOnLocation() throws IOException {
         // Turn on the LocationManager to figure out current location
         LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         
         
         // point of interest generator  call
         LocDBHelper loc = new LocDBHelper(MapViewActivity.this);
+        log.info("LocDBHelper created");
+        //loc.createDatabase();
+        loc.downloadDB(this);
         loc.generatePoints("SELECT * FROM NPC_locs",null,locationManager);
+        log.info("POIs generated");
         
         
         // Define a location listener and the events that go with it    

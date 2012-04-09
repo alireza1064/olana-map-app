@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.*;
 //import java.sql.*;
 
 //import android.R;
@@ -32,6 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  *
  */
 public class NoteDBHelper extends SQLiteOpenHelper {
+	static Logger log;
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "notification_info.sqlite";
 	private static Context myContext;
@@ -46,9 +48,12 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	
 	public static void main(String[] args){
 		NoteDBHelper note = new NoteDBHelper(myContext);
+		log.info("NoteDBHelper created");
 		//proxStore = LocDBHelper.getProxStore();
+		note.downloadDB(myContext);
+		log.info("Note DB downloaded");
 		note.generateNotes("SELECT * FROM NP_loc_info", null);
-		
+		log.info("Notes generated");
 		
 		
 	}
@@ -231,6 +236,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 				}
 			//	results.add(m);
 				NoteStore[t]=n;
+				log.info("Note"+t+" Gereated and stored");
 				t++;
 			} while(c.moveToNext());
 		}

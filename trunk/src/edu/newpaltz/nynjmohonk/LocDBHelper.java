@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.*;
 //import java.util.ArrayList;
 
 import android.app.PendingIntent;
@@ -32,7 +33,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
  *
  */
 public class LocDBHelper extends SQLiteOpenHelper {
-	//private Location loc;
+	static //private Location loc;
+	Logger log;
 	private static String DB_PATH = ""; 
 	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
 	private final Context myContext;
@@ -201,6 +203,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 				//proxStore[t] = 
 				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName(),t);
 				t++;
+				log.info("POI and Proxy point"+t+" genreated and stored");
 			//	results.add(p);
 			} while(c.moveToNext());
 		}
@@ -216,7 +219,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
 				c, 0, new Intent(c,NoteDBHelper.class).putExtra(loc_name, loc_name), flag));
 		
-		
+		log.info("Intent set");
 		
 		//return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
 	}
@@ -242,7 +245,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	/**
 	 * Download the database from a hardcoded URL location so that we can have the most up-to-date map files
 	 */
-	public static void downloadDB(Context c) {	
+	public void downloadDB(Context c) {	
 		DB_PATH = "/data/data/" + c.getApplicationContext().getPackageName() + "/databases/";
 		dbLoadState = 3;
 		String downloadURL = c.getString(R.string.NP_database_url);

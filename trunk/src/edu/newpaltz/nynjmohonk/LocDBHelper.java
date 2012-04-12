@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.logging.*;
 //import java.util.ArrayList;
 
@@ -176,10 +177,10 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	 * @param a location manager to generate the proximity alerts
 	 */
 	
-	public void generatePoints(String query, String[] selectionArgs, LocationManager loc) {
+	public ArrayList<PointOfInterest> generatePoints(String query, String[] selectionArgs, LocationManager loc) {
 
 		//query = "SELECT * FROM NPC_locs";
-	//	ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
+		ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
 		proxStore = new String[128];
 		int pendIntFlag = 1073741824;  // indicated single usage only!
 		int t = 0;
@@ -201,20 +202,20 @@ public class LocDBHelper extends SQLiteOpenHelper {
 				}
 				POIStore[t] = p;
 				//proxStore[t] = 
-				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName(),t);
+				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName());
 				t++;
 				log.info("POI and Proxy point"+t+" genreated and stored");
-			//	results.add(p);
+				results.add(p);
 			} while(c.moveToNext());
 		}
 		c.close();
 		c.deactivate();
 		myDatabase.close();
-		//return results;
+		return results;
 	}
 	//THIS MIGHT NEED TO BE CHANGED!!! specifically the intent sections
 	public static void addProxyAlert(LocationManager loc, double lat, double longe, 
-			int radius,Context c, int flag, String loc_name, int timeActivated ){
+			int radius,Context c, int flag, String loc_name){
 		
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
 				c, 0, new Intent(c,NoteDBHelper.class).putExtra(loc_name, loc_name), flag));

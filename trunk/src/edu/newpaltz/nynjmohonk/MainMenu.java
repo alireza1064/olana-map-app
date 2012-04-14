@@ -74,6 +74,8 @@ public class MainMenu extends Activity {
 								currentMap = results.get(item);
 								Intent i = new Intent(MainMenu.this, MapViewActivity.class);
 								i.putExtra("myMap", currentMap);
+								MyApplication.midPointX = currentMap.getMapMidX();
+								MyApplication.midPointY = currentMap.getMapMidY();
 								d = ProgressDialog.show(MainMenu.this, "", "Loading map...");
 								MainMenu.this.startActivity(i); // start activity on main thread	
 							}

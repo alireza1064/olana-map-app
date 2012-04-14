@@ -12,6 +12,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -87,6 +88,15 @@ public class Map implements Parcelable {
 			default: break;
 		}
 	}	
+	
+	public int getMapMidX(){
+		
+		return width/2;
+	}
+	
+	public int getMapMidY(){
+		return height/2;
+	}
 	
 	/**
 	 * @return The unique id of the row for this map

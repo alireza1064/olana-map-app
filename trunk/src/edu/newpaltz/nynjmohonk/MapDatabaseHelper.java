@@ -193,6 +193,8 @@ public class MapDatabaseHelper extends SQLiteOpenHelper {
 		return results;
 	}
 	
+	
+	
 	private static int dbLoadState = 0;
 
 	

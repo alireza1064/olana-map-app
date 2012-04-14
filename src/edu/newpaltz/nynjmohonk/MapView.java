@@ -55,7 +55,7 @@ public class MapView extends ImageView {
 		m = getImageMatrix();
 		m.setScale(.8f, .8f);
 		m.setRotate(40);
-		centerOnPoint(1500, 1000, false);
+		centerOnPoint(MyApplication.midPointX, MyApplication.midPointY, false);
 		setImageMatrix(m);
 		setScaleType(ScaleType.MATRIX);
 		p = new Paint();

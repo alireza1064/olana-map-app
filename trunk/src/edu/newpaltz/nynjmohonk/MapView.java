@@ -266,7 +266,7 @@ public class MapView extends ImageView {
      */
     public void centerOnPoint(float x, float y, boolean post) {
     	m = getImageMatrix();
-       	float xoffset = 150, yoffset = 500; // these values should probably not be hardcoded
+       	float xoffset = MyApplication.midPointX/2, yoffset = MyApplication.midPointY/2; // these values should probably not be hardcoded
     	final float dx = -getTransX(m) - x * getScale(m) + xoffset;
     	final float dy = -getTransY(m) - y * getScale(m) + yoffset;
     	    	

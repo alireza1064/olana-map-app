@@ -306,9 +306,12 @@ public class MapViewActivity extends Activity {
 	 * @param lon The current longitude read from the GPS
 	 * @return True if the point is in range, false otherwise.
 	 */
+	
+	//  || (maxLatitude < minLatitude && lat <= minLatitude && lat >= maxLatitude)
+	//  || (maxLongitude < minLongitude && lon <= minLongitude && lon >= maxLongitude)
 	private boolean inRange(double lat, double lon) {    	
-		if((maxLatitude > minLatitude && lat >= minLatitude && lat <= maxLatitude) || (maxLatitude < minLatitude && lat <= minLatitude && lat >= maxLatitude)) {
-			if((maxLongitude > minLongitude && lon >= minLongitude && lon <= maxLongitude) || (maxLongitude < minLongitude && lon <= minLongitude && lon >= maxLongitude)) {
+		if((maxLatitude > minLatitude && lat >= minLatitude && lat <= maxLatitude)) {
+			if((maxLongitude > minLongitude && lon >= minLongitude && lon <= maxLongitude) ) {
 				return true;
 			}
 		}

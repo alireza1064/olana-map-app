@@ -229,8 +229,10 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 					if(c.getString(i) != null) {
 						if(i == 0) {
 							n.setVal(i, c.getInt(i));
-						} else {
+						} else if(i>0&&i<4) {
 							n.setVal(i, c.getString(i));
+						}else{
+							//do nothing
 						}
 					}
 				}

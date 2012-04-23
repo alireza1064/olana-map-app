@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.util.Log;
-import android.util.Log.*;
+
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,8 +38,11 @@ public class MainMenu extends Activity {
 	private AlertDialog mapChoice;
 	private ProgressDialog d = null;
 	private Map currentMap = null;
-	private String databaseURL = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/maps.sqlite";
-	private String dbLocation;
+	//private String mapDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/maps.sqlite";
+	//private String locDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/locs.sqlite";
+	//private String noteDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486427/map_app/notification_info.sqlite";
+
+	//private int currentDB;
 
 	/**
 	 * Create an instance of the main menu, including copying the database (if needed) and reading the maps from the
@@ -48,7 +51,7 @@ public class MainMenu extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		dbLocation = "/data/data/" + this.getApplicationContext().getPackageName() + "/databases/maps.sqlite";
+
 
 		// Open map button shows the select dialog for a map
 		openMap = (Button) findViewById(R.id.launchMap);
@@ -68,8 +71,8 @@ public class MainMenu extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int item) {
-				//Log.d("OnCreate in MainMenu","Going into the MapViewActivity");		
-				// Show dialog symbolizing loading of image (or downloading of image)
+								//Log.d("OnCreate in MainMenu","Going into the MapViewActivity");		
+								// Show dialog symbolizing loading of image (or downloading of image)
 								mapChoice.dismiss();
 								currentMap = results.get(item);
 								Intent i = new Intent(MainMenu.this, MapViewActivity.class);
@@ -126,19 +129,26 @@ public class MainMenu extends Activity {
 			}
 		});
 
+		
+		
+		/*
 		// Check if the database exists
-		File f = new File(dbLocation);
+		File f = new File(MyApplication.dbPaths[0]);
 		if(!f.exists()) {
 			// Either first run or something else is wrong - download the latest database
 			d = ProgressDialog.show(this, "", "Map database does not yet exist.\nDownloading now...");
-			Thread t2 = new Thread(downloadDatabase);
-			t2.start();       	
+			      	//moved the call for download databases from here
 		} else {
 			// Check for a new database (maybe do in background eventually?)
 			//d = ProgressDialog.show(this, "", "Checking for new database...");
 			Thread t3 = new Thread(newDatabaseCheck);
 			t3.start();
 		}
+		*/
+		
+		//to here
+		Thread t2 = new Thread(downloadDatabase);
+		t2.start(); 
 	}
 
 	/**
@@ -234,27 +244,80 @@ public class MainMenu extends Activity {
 	// Start a background thread that downloads the image (if needed) and loads the map and shows
 	// our MapViewActivity
 	private Runnable downloadDatabase = new Runnable() {
-		public void run() {			
-			MapDatabaseHelper.downloadDB(MainMenu.this);
-			while(MapDatabaseHelper.getLoadState() == 0); // wait while the image is in an unknown state
-			while(MapDatabaseHelper.getLoadState() == 3); // wait while image actually downloads...
-			switch(MapDatabaseHelper.getLoadState()) {
-			case 1:
-				// Database loaded successfully
-				MainMenu.this.runOnUiThread(new Runnable() {
-					public void run() {
-						d.dismiss();	
+		public void run() {		
+
+			for(int i =0;i<MyApplication.dbPaths.length;i++){
+
+				
+				
+				if(i==0){
+					Log.v("main menu","downloading map DB");
+					MapDatabaseHelper.downloadDB(MainMenu.this);
+					while(MapDatabaseHelper.getLoadState() == 0); // wait while the image is in an unknown state
+					while(MapDatabaseHelper.getLoadState() == 3); // wait while image actually downloads...
+					switch(MapDatabaseHelper.getLoadState()) {
+					case 1:
+						// Database loaded successfully
+						Log.v("MainMenu","map DB download successful");
+						MainMenu.this.runOnUiThread(new Runnable() {
+							public void run() {
+								//d.dismiss();	
+							}
+						});
+						break;
+					case 2:
+						// There was some error in downloading the image
+						connectionError();
+						break;
 					}
-				});
-				break;
-			case 2:
-				// There was some error in downloading the image
-				connectionError();
-				break;
+				}else if(i ==1){
+					Log.v("main menu","downloading loc DB");
+					LocDBHelper.downloadDB(MainMenu.this);
+					while(LocDBHelper.getLoadState() == 0); // wait while the image is in an unknown state
+					while(LocDBHelper.getLoadState() == 3); // wait while image actually downloads...
+					switch(LocDBHelper.getLoadState()) {
+					case 1:
+						// Database loaded successfully
+						Log.v("MainMenu","loc DB download successful");
+						MainMenu.this.runOnUiThread(new Runnable() {
+							public void run() {
+								//d.dismiss();	
+							}
+						});
+						break;
+					case 2:
+						// There was some error in downloading the image
+						connectionError();
+						break;
+					}
+				}else{
+					Log.v("main menu","downloading note DB");
+					NoteDBHelper.downloadDB(MainMenu.this);
+					while(NoteDBHelper.getLoadState() == 0); // wait while the image is in an unknown state
+					while(NoteDBHelper.getLoadState() == 3); // wait while image actually downloads...
+					switch(NoteDBHelper.getLoadState()) {
+					case 1:
+						// Database loaded successfully
+						Log.v("MainMenu","note DB download successful");
+						MainMenu.this.runOnUiThread(new Runnable() {
+							public void run() {
+								//d.dismiss();	
+							}
+						});
+						break;
+					case 2:
+						// There was some error in downloading the image
+						connectionError();
+						break;
+					}
+				}
+				
 			}
+			
 		}
 
 		public void connectionError() {
+			Log.v("MainMenu","download dbs error");
 			MainMenu.this.runOnUiThread(new Runnable() {
 				public void run() {
 					d.dismiss();
@@ -275,64 +338,98 @@ public class MainMenu extends Activity {
 
 	// Check the last modified date of the current database against the last modified date of the remote database
 	// to see if there is a new database available
+	//not currently used due to issues, program will run by re-downloading DB each time it is run
+	@SuppressWarnings("unused")
 	private Runnable newDatabaseCheck = new Runnable() {
 		public void run() {
 			URL url = null;
 			URLConnection conn = null;
+			Log.v("MainMenu","URL and URL connection created");
+			File f ;
+			for(int i = 0 ;i<MyApplication.dbURLs.length;i++){
+				//currentDB =  i;
+				f = new File(MyApplication.dbPaths[i]);
+				try {
+					url = new URL(MyApplication.dbURLs[i]);
+					conn = url.openConnection();
+					//conn.addRequestProperty("content-length", ""+f.length());
+					//conn.addRequestProperty("last-modified", ""+f.lastModified());
 
-			try {
-				url = new URL(databaseURL);
-				conn = url.openConnection();
-			} catch (MalformedURLException e) {
-				// Should not happen - URL is hardcoded.
-			} catch(IOException e) {
-				// Error connecting to our URL, so just tell the user there was error checking for new DB
-				connectionError();
-				return;
+					conn.setIfModifiedSince(f.lastModified()+1);					
+					conn.setRequestProperty("content-length", ""+f.length());
+
+
+
+					Log.v("MainMenu","connection opened and last modified set");
+				} catch (MalformedURLException e) {
+					// Should not happen - URL is hardcoded.
+					Log.v("MainMenu","caught Malformed URL Exception");
+				} catch(IOException e) {
+					// Error connecting to our URL, so just tell the user there was error checking for new DB
+					Log.v("MainMenu","caught IO Exception");
+					connectionError();
+					return;
+				}
+
+				if(conn.getContentLength() == -1) {
+					Log.v("MainMenu","connection length is -1");
+					connectionError();
+					return;
+				}
+				//content-length
+
+				//current problem area!
+				long remoteModified = 0;
+				String lastModified = conn.getHeaderField("last-modified");
+
+				try {
+					Date date = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH).parse(lastModified);
+					Log.v("MainMenu","date parse success");
+					remoteModified = date.getTime();
+
+				} catch (ParseException e) {
+					// Hopefully never happens
+					Log.v("MainMenu","Parse exception caught");
+					MainMenu.this.runOnUiThread(new Runnable() {
+						public void run() {
+							d.dismiss(); 												
+						}
+					});	
+					return;
+					//current problem area!	
+
+
+				}
+				// File f = new File(MyApplication.dbPaths[i]);
+				if(f.exists() && f.lastModified() < remoteModified) {
+					// New database exists!
+
+
+					MainMenu.this.runOnUiThread(new Runnable() {
+						public void run() {
+							d.dismiss();
+							// Either first run or something else is wrong - download the latest database
+							d = ProgressDialog.show(MainMenu.this, "", "New database available.\nDownloading now...");
+
+							Thread t2 = new Thread(downloadDatabase);
+							t2.start();  												
+						}
+					});		
+					return;
+				} else {
+					// Just do nothing. No new db available
+					MainMenu.this.runOnUiThread(new Runnable() {
+						public void run() { if(d != null) d.dismiss(); }
+					});
+				}
 			}
 
-			if(conn.getContentLength() == -1) {
-				connectionError();
-				return;
-			}
 
-			long remoteModified = 0;
-			String lastModified = conn.getHeaderField("Last-Modified");
-			try {
-				Date date = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH).parse(lastModified);
-				remoteModified = date.getTime();
-			} catch (ParseException e) {
-				// Hopefully never happens
-				MainMenu.this.runOnUiThread(new Runnable() {
-					public void run() {
-						d.dismiss(); 												
-					}
-				});	
-				return;
-			}
-			File f = new File(dbLocation);
-			if(f.exists() && f.lastModified() < remoteModified) {
-				// New database exists!
-				MainMenu.this.runOnUiThread(new Runnable() {
-					public void run() {
-						d.dismiss();
-						// Either first run or something else is wrong - download the latest database
-						d = ProgressDialog.show(MainMenu.this, "", "New map database available.\nDownloading now...");
-						Thread t2 = new Thread(downloadDatabase);
-						t2.start();  												
-					}
-				});		
-				return;
-			} else {
-				// Just do nothing. No new db available
-				MainMenu.this.runOnUiThread(new Runnable() {
-					public void run() { if(d != null) d.dismiss(); }
-				});
-			}
 		}
-
 		public void connectionError() {
+			Log.v("MainMenu","new DB check error");
 			MainMenu.this.runOnUiThread(new Runnable() {
+
 				public void run() {
 					d.dismiss();
 					// Show an alert dialog that shows an error in downloading the map

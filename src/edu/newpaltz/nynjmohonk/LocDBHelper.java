@@ -195,8 +195,10 @@ public class LocDBHelper extends SQLiteOpenHelper {
 							p.setVal(i, c.getDouble(i));
 						} else if(i == 0 || i == 4) {
 							p.setVal(i, c.getInt(i));
-						} else {
+						} else if(i==1){
 							p.setVal(i, c.getString(i));
+						}else{
+							//do nothing
 						}
 					}
 				}
@@ -246,10 +248,10 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	/**
 	 * Download the database from a hardcoded URL location so that we can have the most up-to-date map files
 	 */
-	public void downloadDB(Context c) {	
+	public static void downloadDB(Context c) {	
 		DB_PATH = "/data/data/" + c.getApplicationContext().getPackageName() + "/databases/";
 		dbLoadState = 3;
-		String downloadURL = c.getString(R.string.NP_database_url);
+		String downloadURL = c.getString(R.string.locs_database_url);
 		HttpGet httpRequest = null;
 		String dbFilename = DB_PATH + DB_NAME;
 

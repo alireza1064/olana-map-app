@@ -217,18 +217,16 @@ public class MapViewActivity extends Activity {
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
 
-/*
+		MyApplication.currentMap = myMap.getFilename();
 		// point of interest generator  call and generation
 		final ArrayList<PointOfInterest> POIs = 
 			PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);
 		log.info("POIs generated");
+//get current map filename
+		
+		final ArrayList<NoteBuilder> Note = NoteBuilder.getAllNotes(MapViewActivity.this);
 
-
-		/*
-        //LocDBHelper loc = new LocDBHelper(MapViewActivity.this);
-        log.info("LocDBHelper created");
-
-		 */
+		
 
 		
 		

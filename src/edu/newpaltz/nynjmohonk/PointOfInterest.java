@@ -95,7 +95,7 @@ public class PointOfInterest  {
 
 		//This needs to be fixed!!  
 		//It needs something to pull the DB table name from the locs DB to specify correct query String
-		String query = "SELECT * FROM NPC_locs";
+		String query = "SELECT * FROM locs where map = "+MyApplication.currentMap; 
 		return ldb.generatePoints(query, null,loc);		
 	}
 

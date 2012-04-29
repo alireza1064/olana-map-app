@@ -1,6 +1,11 @@
 package edu.newpaltz.nynjmohonk;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
+import android.location.LocationManager;
 
 public class NoteBuilder {
 	private Context myContext;
@@ -44,7 +49,33 @@ public class NoteBuilder {
 		}
 	}
 	
-	
+	public static ArrayList<NoteBuilder> getAllNotes(Context c) throws SQLiteException{
+
+		NoteDBHelper ndb = NoteDBHelper.getDBInstance(c);
+		try {
+			ndb.createDatabase();
+		} catch (IOException e) {
+			//Log.d("DEBUG", "Error creating database..."); // CHANGEME
+			return null;
+		}
+
+		// Open the sqlite database
+		try {
+			ndb.openDatabase();
+		} catch (IOException e) {
+			//Log.d("DEBUG", "Error opening database..."); // CHANGEME
+			return null;
+		}
+
+		// Generate the AlertDialog that will list all of the maps. Also put the information on
+		// the maps into an ArrayList so that it's accessible when the users selects a map
+
+
+		//This needs to be fixed!!  
+		//It needs something to pull the DB table name from the locs DB to specify correct query String
+		String query = "SELECT * FROM note_info where map = "+MyApplication.currentMap; 
+		return ndb.generateNotes(query, null);		
+	}
 	
 
 }

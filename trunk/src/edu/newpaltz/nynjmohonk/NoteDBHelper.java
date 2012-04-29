@@ -215,11 +215,11 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	 * @return An ArrayList of map objects corresponding to our SELECT query
 	 */
 	// Select query function 
-	public void generateNotes(String query, String[] selectionArgs) {
+	public ArrayList<NoteBuilder> generateNotes(String query, String[] selectionArgs) {
 		
 		//query = "SELECT * FROM NP_loc_info";
 		int t = 0;
-		//ArrayList<Map> results = new ArrayList<Map>();
+		ArrayList<NoteBuilder> results = new ArrayList<NoteBuilder>();
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
@@ -236,8 +236,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 						}
 					}
 				}
-			//	results.add(m);
-				NoteStore[t]=n;
+				results.add(n);
+			//	NoteStore[t]=n;
 				log.info("Note"+t+" Gereated and stored");
 				t++;
 			} while(c.moveToNext());
@@ -245,7 +245,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		c.close();
 		c.deactivate();
 		myDatabase.close();
-		//return results;
+		return results;
 	}
 	
 	

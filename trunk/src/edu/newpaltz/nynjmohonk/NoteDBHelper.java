@@ -299,8 +299,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 			InputStream instream = bufHttpEntity.getContent();
 			int nRead;
 
-			MapDatabaseHelper mdb = MapDatabaseHelper.getDBInstance(c);
-	        mdb.setupDatabase();
+			NoteDBHelper ndb = NoteDBHelper.getDBInstance(c);
+	        ndb.setupDatabase();
 	
 			FileOutputStream f = new FileOutputStream(dbFilename + ".tmp");
 			

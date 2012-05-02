@@ -15,7 +15,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.util.Log;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +28,7 @@ import android.location.LocationManager;
  * user's location from GPS and generally responding to any events that deal with the map *
  */
 public class MapViewActivity extends Activity {
-	Logger log ;
+	
 	private ProgressDialog d = null;
 	private Map myMap;
 	private MapView myMapView;
@@ -221,12 +221,12 @@ public class MapViewActivity extends Activity {
 		// point of interest generator  call and generation
 		final ArrayList<PointOfInterest> POIs = 
 			PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);
-		log.info("POIs generated");
+		Log.v("MapViewActivity", "POIs generated");
 //get current map filename
 		
 		final ArrayList<NoteBuilder> Note = NoteBuilder.getAllNotes(MapViewActivity.this);
 
-		
+		Log.v("MapViewActivity","Notes generated");
 
 		
 		

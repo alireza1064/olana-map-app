@@ -280,8 +280,8 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			InputStream instream = bufHttpEntity.getContent();
 			int nRead;
 
-			MapDatabaseHelper mdb = MapDatabaseHelper.getDBInstance(c);
-	        mdb.setupDatabase();
+			LocDBHelper ldb = LocDBHelper.getDBInstance(c);
+	        ldb.setupDatabase();
 	
 			FileOutputStream f = new FileOutputStream(dbFilename + ".tmp");
 			

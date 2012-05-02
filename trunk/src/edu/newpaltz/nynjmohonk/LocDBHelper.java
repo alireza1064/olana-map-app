@@ -220,7 +220,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			int radius,Context c, int flag, String loc_name){
 		
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
-				c, 0, new Intent(c,NoteDBHelper.class).putExtra(loc_name, loc_name), flag));
+				c, 0, new Intent().putExtra(loc_name, loc_name), flag));
 		
 		log.info("Intent set");
 		

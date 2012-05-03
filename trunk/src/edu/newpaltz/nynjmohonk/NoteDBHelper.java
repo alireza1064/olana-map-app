@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -46,7 +47,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	private static NoteBuilder n;
 	
 	
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		NoteDBHelper note = new NoteDBHelper(myContext);
 		log.info("NoteDBHelper created");
 		//proxStore = LocDBHelper.getProxStore();
@@ -56,7 +57,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 		log.info("Notes generated");
 		
 		
-	}
+	}*/
 	
 	public static NoteBuilder[] getNoteStore(){
 		return NoteStore;
@@ -78,6 +79,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 	 * to the SQLite database file based on the application context
 	 * @param context The current application context
 	 */
+	@SuppressWarnings("static-access")
 	public NoteDBHelper(Context context) {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
@@ -138,6 +140,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 		} catch (SQLiteException e) {
 			// database does not yet exist
+			//this.setupDatabase();
 		}
 		
 		if(checkDB != null) {
@@ -238,7 +241,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 				}
 				results.add(n);
 			//	NoteStore[t]=n;
-				log.info("Note"+t+" Gereated and stored");
+				
+				Log.v("NOTE","Note"+t+" Gereated and stored");
 				t++;
 			} while(c.moveToNext());
 		}

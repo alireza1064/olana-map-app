@@ -73,7 +73,10 @@ public class NoteBuilder {
 
 		//This needs to be fixed!!  
 		//It needs something to pull the DB table name from the locs DB to specify correct query String
-		String query = "SELECT * FROM note_info where map = "+MyApplication.currentMap; 
+		
+		//String query = "SELECT * FROM note_info where map = "+MyApplication.currentMap;
+		
+		String query = "SELECT * FROM note_info";
 		return ndb.generateNotes(query, null);		
 	}
 	

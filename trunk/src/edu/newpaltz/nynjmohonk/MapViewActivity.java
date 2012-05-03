@@ -217,7 +217,7 @@ public class MapViewActivity extends Activity {
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
 
-		MyApplication.currentMap = myMap.getFilename();
+		MyApplication.currentMap = myMap.getName();
 		// point of interest generator  call and generation
 		final ArrayList<PointOfInterest> POIs = 
 			PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);

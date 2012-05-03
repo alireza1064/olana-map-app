@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.LocationManager;
+import android.util.Log;
 //import android.location.*;
 
 import org.apache.http.HttpEntity;
@@ -37,12 +38,12 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	static //private Location loc;
 	Logger log;
 	private static String DB_PATH = ""; 
-	private static final String DB_NAME = "newpaltzcampus_locs.sqlite";
+	private static final String DB_NAME = "locs.sqlite";
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
 	private static LocDBHelper myDBConnection;
-	private static String proxStore[];
-	private static PointOfInterest[] POIStore;
+	//private static String proxStore[];
+	//private static PointOfInterest[] POIStore;
 	private PointOfInterest p;
 	
 	/**
@@ -106,6 +107,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 		} catch (SQLiteException e) {
 			// database does not yet exist
+			//this.setupDatabase();
 		}
 		
 		if(checkDB != null) {
@@ -181,7 +183,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 
 		//query = "SELECT * FROM NPC_locs";
 		ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
-		proxStore = new String[128];
+		//proxStore = new String[128];
 		int pendIntFlag = 1073741824;  // indicated single usage only!
 		int t = 0;
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
@@ -202,11 +204,12 @@ public class LocDBHelper extends SQLiteOpenHelper {
 						}
 					}
 				}
-				POIStore[t] = p;
+				//POIStore[t] = p;
 				//proxStore[t] = 
 				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName());
 				t++;
-				log.info("POI and Proxy point"+t+" genreated and stored");
+				Log.v("POI","POI and Proxy point"+t+" genereated");
+				
 				results.add(p);
 			} while(c.moveToNext());
 		}
@@ -222,18 +225,18 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
 				c, 0, new Intent().putExtra(loc_name, loc_name), flag));
 		
-		log.info("Intent set");
+		Log.v("POI","Proxy alert successfuly created");
 		
 		//return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
 	}
 	
-	public static PointOfInterest[] getPOIStore(){
-		return POIStore;
-	}
+	//public static PointOfInterest[] getPOIStore(){
+	//	return /;
+	//}
 	
-	public static String[] getProxStore(){
-		return proxStore;
-	}
+	//public static String[] getProxStore(){
+	//	return proxStore;
+	//}
 	
 	private static int dbLoadState = 0;
 

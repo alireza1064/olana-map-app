@@ -215,7 +215,8 @@ public class MapViewActivity extends Activity {
 	private void turnOnLocation() throws IOException {
 		// Turn on the LocationManager to figure out current location
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-
+		
+		ProxyAlertReceiver PAR = new ProxyAlertReceiver(MapViewActivity.this); 
 
 		MyApplication.currentMap = myMap.getName();
 		// point of interest generator  call and generation
@@ -240,15 +241,46 @@ public class MapViewActivity extends Activity {
 					// Center on the first point
 					willCenter = true;
 				}
+				
+				
+				
 				double longitude = location.getLongitude();
 				double latitude = location.getLatitude();
+				/*
+				 *  double longitude = 0;
+				double latitude = 0;
+				double aveLat = 0;
+				double aveLong = 0;
+				double cumLat = 0;
+				double cumLong = 0;
+				int i = 0;
+				while(i<5){
+					i++;
+					longitude = location.getLongitude();
+					latitude = location.getLatitude();
+					cumLong +=longitude;
+					cumLat +=latitude;
+					
+				}
+				aveLong = cumLong/i;
+				aveLat = cumLat/i;
+				i=0;
+				*/
 				if(location.hasBearing()) {
 					myMapView.setBearing(location.getBearing());
 				}
 				// In this method we want to update our image to reflect the change in location
+				
+				/*
+				 * curLatitude = aveLat;
+				curLongitude = aveLong;
+				updateMapLocation(aveLong, aveLat); 
+				 */
 				curLatitude = latitude;
 				curLongitude = longitude;
 				updateMapLocation(longitude, latitude);
+				
+				
 			}
 
 			public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -259,7 +291,7 @@ public class MapViewActivity extends Activity {
 		};
 
 		// Link the location listener to the location manager
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 	}
 
 	/**

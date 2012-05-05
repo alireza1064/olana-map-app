@@ -216,7 +216,7 @@ public class MapViewActivity extends Activity {
 		// Turn on the LocationManager to figure out current location
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 		
-		ProxyAlertReceiver PAR = new ProxyAlertReceiver(MapViewActivity.this); 
+		//ProxyAlertReceiver PAR = new ProxyAlertReceiver(MapViewActivity.this); 
 
 		MyApplication.currentMap = myMap.getName();
 		// point of interest generator  call and generation
@@ -291,7 +291,7 @@ public class MapViewActivity extends Activity {
 		};
 
 		// Link the location listener to the location manager
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
 	}
 
 	/**

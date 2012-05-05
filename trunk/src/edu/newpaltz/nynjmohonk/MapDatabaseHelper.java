@@ -89,6 +89,10 @@ public class MapDatabaseHelper extends SQLiteOpenHelper {
 	 * @return True if the database is already copied and false otherwise
 	 */
 	public boolean databaseExists() {
+		String myPath = DB_PATH + DB_NAME;
+		File dbFile = new File(myPath);
+		return dbFile.exists();
+		/*
 		SQLiteDatabase checkDB = null;
 		try {
 			String myPath = DB_PATH + DB_NAME;
@@ -102,6 +106,7 @@ public class MapDatabaseHelper extends SQLiteOpenHelper {
 		}
 		
 		return checkDB != null;
+		*/
 	}
 	
 	/**

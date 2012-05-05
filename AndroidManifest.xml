@@ -39,7 +39,7 @@
 
         <receiver android:name=".ProxyAlertReceiver" >
             <intent-filter>
-                <action android:name="android.action.intent.KEY_PROXIMITY_ENTERING" />
+                <action android:name="entering" />
             </intent-filter>
         </receiver>
 

@@ -101,10 +101,15 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	 * @return True if the database is already copied and false otherwise
 	 */
 	public boolean databaseExists() {
+		String myPath = DB_PATH + DB_NAME;
+		File dbFile = new File(myPath);
+		return dbFile.exists();
+		/*
 		SQLiteDatabase checkDB = null;
+		
 		try {
-			String myPath = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+			
+			//checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 		} catch (SQLiteException e) {
 			// database does not yet exist
 			//this.setupDatabase();
@@ -115,6 +120,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		}
 		
 		return checkDB != null;
+		*/
 	}
 	
 	/**
@@ -223,7 +229,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			int radius,Context c, int flag, String loc_name){
 		
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
-				c, 0, new Intent().putExtra(loc_name, loc_name), flag));
+				c, 0, new Intent(c,ProxyAlertReceiver.class).putExtra(loc_name, loc_name), flag));
 		
 		Log.v("POI","Proxy alert successfuly created");
 		

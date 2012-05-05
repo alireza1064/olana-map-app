@@ -93,12 +93,11 @@ public class PointOfInterest  {
 		// the maps into an ArrayList so that it's accessible when the users selects a map
 
 
-		//This needs to be fixed!!  
-		//It needs something to pull the DB table name from the locs DB to specify correct query String
+		//This Works!!!
 		
-		//query = "SELECT * FROM locs where map = "+MyApplication.currentMap;
+		String query = "SELECT * FROM locs where map = '"+MyApplication.currentMap+"'";
 		
-		String query = "SELECT * FROM locs ";
+		//String query = "SELECT * FROM locs ";
 		return ldb.generatePoints(query, null,loc);		
 	}
 

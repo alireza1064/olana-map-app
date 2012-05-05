@@ -38,6 +38,8 @@ public class MainMenu extends Activity {
 	private AlertDialog mapChoice;
 	private ProgressDialog d = null;
 	private Map currentMap = null;
+	File dbFile;
+	private boolean dialogShowing;
 	//private String mapDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/maps.sqlite";
 	//private String locDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/locs.sqlite";
 	//private String noteDatabaseURL = "https://wyvern.cs.newpaltz.edu/~n02486427/map_app/notification_info.sqlite";
@@ -48,11 +50,17 @@ public class MainMenu extends Activity {
 	 * Create an instance of the main menu, including copying the database (if needed) and reading the maps from the
 	 * map table. Create the onClickListener for the Select Map button.
 	 */
-	public void onCreate(Bundle savedInstanceState) {
+ 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-
+		dialogShowing = false; 
+		dbFile = new File(MyApplication.dbPaths[0]);
+		if(!dbFile.exists()){
+			Thread t2 = new Thread(downloadDatabase);
+			t2.start();
+		}
+		
 		// Open map button shows the select dialog for a map
 		openMap = (Button) findViewById(R.id.launchMap);
 		openMap.setOnClickListener(new OnClickListener() {
@@ -100,8 +108,8 @@ public class MainMenu extends Activity {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MainMenu.this);
 					builder.setMessage("Your map database is corrupted, so a new one will be downloaded.")
 					.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							d = ProgressDialog.show(MainMenu.this, "", "Downloading new database...");
+						public void onClick(DialogInterface dialog, int which) {
+							ProgressDialog.show(MainMenu.this, "", "Downloading new database...");
 							Thread t = new Thread(downloadDatabase);
 							t.start();
 						}
@@ -128,8 +136,6 @@ public class MainMenu extends Activity {
 				MainMenu.this.startActivity(new Intent(MainMenu.this, DownloadMapsActivity.class)); // start activity on main thread	
 			}
 		});
-
-		
 		
 		/*
 		// Check if the database exists
@@ -147,8 +153,8 @@ public class MainMenu extends Activity {
 		*/
 		
 		//to here
-		Thread t2 = new Thread(downloadDatabase);
-		t2.start(); 
+		//Thread t2 = new Thread(downloadDatabase);
+		//t2.start(); 
 	}
 
 	/**
@@ -197,6 +203,7 @@ public class MainMenu extends Activity {
 		switch(item.getItemId()) {
 		case R.id.new_database:
 			d = ProgressDialog.show(this, "", "Downloading new database");
+			dialogShowing = true;
 			Thread t2 = new Thread(downloadDatabase);
 			t2.start();
 			break;
@@ -246,9 +253,7 @@ public class MainMenu extends Activity {
 	private Runnable downloadDatabase = new Runnable() {
 		public void run() {		
 
-			for(int i =0;i<MyApplication.dbPaths.length;i++){
-
-				
+			for(int i =0;i<MyApplication.dbPaths.length;i++){			
 				
 				if(i==0){
 					Log.v("main menu","downloading map DB");
@@ -301,7 +306,9 @@ public class MainMenu extends Activity {
 						Log.v("MainMenu","note DB download successful");
 						MainMenu.this.runOnUiThread(new Runnable() {
 							public void run() {
-								//d.dismiss();	
+								if(dialogShowing==true){
+									d.dismiss();	
+								}									
 							}
 						});
 						break;
@@ -313,6 +320,8 @@ public class MainMenu extends Activity {
 				}
 				
 			}
+			
+			
 			
 		}
 
@@ -334,6 +343,9 @@ public class MainMenu extends Activity {
 				}
 			});
 		}
+		
+		
+		
 	};    
 
 	// Check the last modified date of the current database against the last modified date of the remote database

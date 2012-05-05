@@ -4,6 +4,7 @@ import android.app.Application;
 
 public class MyApplication extends Application {
 	
+	public static boolean firstDnld;
 	public static String currentMap;
 	public static int midPointX;
 	public static int midPointY;
@@ -13,7 +14,7 @@ public class MyApplication extends Application {
 	
 	public void onCreate(){
 		super.onCreate();
-	
+	firstDnld = true;
 	dbURLs[0] = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/maps.sqlite";
 	dbURLs[1] = "https://wyvern.cs.newpaltz.edu/~n02486417/map_app/locs.sqlite";
 	dbURLs[2] = "https://wyvern.cs.newpaltz.edu/~n02486427/map_app/notification_info.sqlite";

@@ -1,10 +1,9 @@
 package edu.newpaltz.nynjmohonk;
 
 
-//import android.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,16 +18,20 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+
 
 /**
  * This activity is called from our Main Menu activity and it displays the map, updating the 
  * user's location from GPS and generally responding to any events that deal with the map *
  */
 public class MapViewActivity extends Activity {
-	
+
 	private ProgressDialog d = null;
 	private Map myMap;
 	private MapView myMapView;
@@ -40,6 +43,7 @@ public class MapViewActivity extends Activity {
 	private CompassListener cl;
 	private Bitmap mapBitmap;
 	private boolean willCenter = false;
+	
 
 	/**
 	 * Sets up the content view to be the map layout. Turns on the compass and links it to the map. Pulls the map
@@ -51,7 +55,7 @@ public class MapViewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		myContext = this.getApplicationContext();
 		System.loadLibrary("bitmap");
 
 		// Show the map view
@@ -125,8 +129,8 @@ public class MapViewActivity extends Activity {
 			});
 			AlertDialog memoryError = builder.create();
 			memoryError.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.gc();
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}   
 	}
@@ -215,7 +219,7 @@ public class MapViewActivity extends Activity {
 	private void turnOnLocation() throws IOException {
 		// Turn on the LocationManager to figure out current location
 		LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-		
+
 		//ProxyAlertReceiver PAR = new ProxyAlertReceiver(MapViewActivity.this); 
 
 		MyApplication.currentMap = myMap.getName();
@@ -223,14 +227,14 @@ public class MapViewActivity extends Activity {
 		final ArrayList<PointOfInterest> POIs = 
 			PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);
 		Log.v("MapViewActivity", "POIs generated");
-//get current map filename
-		
+		//get current map filename
+
 		final ArrayList<NoteBuilder> Note = NoteBuilder.getAllNotes(MapViewActivity.this);
 
 		Log.v("MapViewActivity","Notes generated");
 
-		
-		
+
+
 		// Define a location listener and the events that go with it    
 		locationListener = new LocationListener() {
 
@@ -241,9 +245,9 @@ public class MapViewActivity extends Activity {
 					// Center on the first point
 					willCenter = true;
 				}
-				
-				
-				
+
+
+
 				double longitude = location.getLongitude();
 				double latitude = location.getLatitude();
 				/*
@@ -260,17 +264,17 @@ public class MapViewActivity extends Activity {
 					latitude = location.getLatitude();
 					cumLong +=longitude;
 					cumLat +=latitude;
-					
+
 				}
 				aveLong = cumLong/i;
 				aveLat = cumLat/i;
 				i=0;
-				*/
+				 */
 				if(location.hasBearing()) {
 					myMapView.setBearing(location.getBearing());
 				}
 				// In this method we want to update our image to reflect the change in location
-				
+
 				/*
 				 * curLatitude = aveLat;
 				curLongitude = aveLong;
@@ -279,8 +283,8 @@ public class MapViewActivity extends Activity {
 				curLatitude = latitude;
 				curLongitude = longitude;
 				updateMapLocation(longitude, latitude);
-				
-				
+
+
 			}
 
 			public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -294,6 +298,7 @@ public class MapViewActivity extends Activity {
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
 	}
 
+	
 	/**
 	 * Calculate the pixel point based on the given longitude and latitude. Uses information from the world
 	 * file given by ArcGIS and from other values calculated at the start of the activity
@@ -336,7 +341,7 @@ public class MapViewActivity extends Activity {
 	 * @param lon The current longitude read from the GPS
 	 * @return True if the point is in range, false otherwise.
 	 */
-	
+
 	//  || (maxLatitude < minLatitude && lat <= minLatitude && lat >= maxLatitude)
 	//  || (maxLongitude < minLongitude && lon <= minLongitude && lon >= maxLongitude)
 	private boolean inRange(double lat, double lon) {    	

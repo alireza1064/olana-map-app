@@ -129,6 +129,7 @@ public class DownloadMapsActivity extends ListActivity {
 					});
 					break;
 			}
+			System.gc();
     	}
     };
     

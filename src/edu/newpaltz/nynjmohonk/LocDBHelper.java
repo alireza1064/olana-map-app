@@ -186,7 +186,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	 */
 	
 	public ArrayList<PointOfInterest> generatePoints(String query, String[] selectionArgs, LocationManager loc) {
-
+		Intent intent = new Intent();
 		//query = "SELECT * FROM NPC_locs";
 		ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
 		//proxStore = new String[128];
@@ -228,7 +228,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	public static void addProxyAlert(LocationManager loc, double lat, double longe, 
 			int radius,Context c, int flag, String loc_name){
 		
-		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getActivity(
+		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getBroadcast(
 				c, 0, new Intent(c,ProxyAlertReceiver.class).putExtra(loc_name, loc_name), flag));
 		
 		Log.v("POI","Proxy alert successfuly created");

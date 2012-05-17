@@ -37,9 +37,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".ProxyAlertReceiver" >
+        <receiver android:name=".ProxyAlertReceiver" android:enabled="true" >
             <intent-filter>
-                <action android:name="entering" />
+                <action android:name="entering"></action>
             </intent-filter>
         </receiver>
 

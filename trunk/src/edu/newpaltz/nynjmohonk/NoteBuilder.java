@@ -1,11 +1,10 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
-import android.location.LocationManager;
 
 public class NoteBuilder {
 	private Context myContext;

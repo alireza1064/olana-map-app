@@ -1,7 +1,7 @@
 /*  (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>*/
 
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 public class TEA {
 	
 	private final static int SUGAR = 0x9E3779B9;

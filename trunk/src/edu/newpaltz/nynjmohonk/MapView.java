@@ -1,6 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
-//import android.R;
+//Jon Davin
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

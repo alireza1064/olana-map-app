@@ -1,17 +1,11 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.webkit.WebView;
-import android.content.DialogInterface;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
 import android.util.Log;
-
-
-
 
 public class ProxyAlertReceiver extends BroadcastReceiver {
 

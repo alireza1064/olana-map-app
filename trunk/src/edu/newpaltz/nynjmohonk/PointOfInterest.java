@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -7,18 +7,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.location.LocationManager;
 
-
-
-
 public class PointOfInterest  {
 
 	private int id, radius;
 	private double lat, longe;
 	private String loc_name;
 	private Context myContext;
-
-
-
 
 	public PointOfInterest(Context c){
 		myContext = c;		

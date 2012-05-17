@@ -1,7 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
-
-
+//Jon Davin
 import java.io.IOException;
 import java.util.ArrayList;
 import android.app.Activity;
@@ -43,6 +41,7 @@ public class MapViewActivity extends Activity {
 	private CompassListener cl;
 	private Bitmap mapBitmap;
 	private boolean willCenter = false;
+	private Context myContext;
 	
 
 	/**

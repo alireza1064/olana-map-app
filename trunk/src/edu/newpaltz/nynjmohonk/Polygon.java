@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 /**
  * Minimal polygon class used soley for the algorithm that tells if a point is within
  * the current polygon instance

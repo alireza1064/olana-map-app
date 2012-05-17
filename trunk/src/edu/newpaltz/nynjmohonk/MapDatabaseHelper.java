@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import org.apache.http.HttpEntity;

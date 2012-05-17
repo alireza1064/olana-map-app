@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +12,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -33,7 +33,7 @@ public class ProxyAlertReceiver extends BroadcastReceiver {
 		intent1 = intent;
 		myContext =context;
 		
-		MyApplication.callBack.postAtFrontOfQueue(MapViewActivity.poiAlert);
+		MyApplication.callBack.postAtFrontOfQueue(MyApplication.poiAlert);
 
 	}
 

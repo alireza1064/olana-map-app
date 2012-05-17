@@ -20,9 +20,10 @@ public class MyApplication extends Application {
 	public static String[] dbURLs = new String[3];
 	public static String[] dbPaths = new String[3];
 	public static Handler callBack = new Handler(); 
-	private static AlertDialog alert;
-	private static WebView webview;
-	private static Context myContext;
+	public static AlertDialog alert;
+	public static WebView webview;
+	//private static Context myContext;
+	static Runnable poiAlert;
 
 	public void onCreate(){
 		super.onCreate();
@@ -35,7 +36,7 @@ public class MyApplication extends Application {
 		dbPaths[1] =  "/data/data/" + this.getApplicationContext().getPackageName() + "/databases/locs.sqlite";
 		dbPaths[2] =  "/data/data/" + this.getApplicationContext().getPackageName() + "/databases/notification_info.sqlite";
 
-		Runnable poiAlert = new Runnable(){
+		poiAlert = new Runnable(){
 			public void run(){
 
 				//	if(ProxyAlertReceiver.intent1.getBooleanExtra("KEY_PROXIMITY_ENTERING",false)==true){

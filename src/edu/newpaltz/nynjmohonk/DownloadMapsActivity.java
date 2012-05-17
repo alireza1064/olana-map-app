@@ -1,9 +1,7 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.util.ArrayList;
 import java.util.HashMap;
-
-//import android.R;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;

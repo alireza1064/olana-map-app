@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,18 +10,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.*;
-//import java.util.ArrayList;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.LocationManager;
 import android.util.Log;
-//import android.location.*;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

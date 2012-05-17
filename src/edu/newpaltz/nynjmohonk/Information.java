@@ -1,6 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
-//import android.R;
+//Jon Davin
 import android.app.Activity;
 import android.os.Bundle;
 

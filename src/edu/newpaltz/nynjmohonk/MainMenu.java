@@ -1,5 +1,5 @@
 package edu.newpaltz.nynjmohonk;
-
+//Jon Davin
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -10,9 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
 import android.util.Log;
-
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -294,6 +294,7 @@ public class MainMenu extends Activity {
 						break;
 					}
 				}else{
+					/*
 					Log.v("main menu","downloading note DB");
 					NoteDBHelper.downloadDB(MainMenu.this);
 					while(NoteDBHelper.getLoadState() == 0); // wait while the image is in an unknown state
@@ -315,11 +316,11 @@ public class MainMenu extends Activity {
 						connectionError();
 						break;
 					}
+					*/
 				}
 				
-			}
-			
-			
+				
+			}		
 			
 		}
 

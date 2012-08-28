@@ -1,6 +1,8 @@
 package edu.newpaltz.nynjmohonk;
 //Jon Davin
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -11,13 +13,31 @@ public class PointOfInterest  {
 
 	private int id, radius;
 	private double lat, longe;
-	private String loc_name;
+	private String loc_name,short_info,mapName;
+	private boolean youAreHere = false;
+	private URL long_info;
 	private Context myContext;
 
 	public PointOfInterest(Context c){
 		myContext = c;		
 	}
+	
+	public boolean getCurrLoc(){
+		return youAreHere;
+	}
+	
+	public void setCurrLoc(boolean status){
+		youAreHere = status;
+	}
 
+	public String getShortInfo(){
+		return short_info;
+	}
+	
+	public URL getLongInfo(){
+		return long_info;
+	}
+	
 	public double getLat(){
 		return lat;
 	}
@@ -37,8 +57,15 @@ public class PointOfInterest  {
 	public String getLocName(){
 		return loc_name;
 	}
+	
+	
 
-
+	public void setVal(int column, URL val){
+		switch(column){
+		
+		default: break;
+		}
+	}
 
 	public void setVal(int column, int val){
 		switch(column){
@@ -58,14 +85,17 @@ public class PointOfInterest  {
 
 	}
 
-	public void setVal(int column, String val){
+	public void setVal(int column, String val) throws MalformedURLException{
 		switch(column){
 		case 1: this.loc_name = val; break;
+		case 5: this.mapName = val; break;
+		case 6: this.short_info = val; break;
+		case 7: this.long_info = new URL(val); break;
 		default: break;
 		}
 	}
 
-	public static ArrayList<PointOfInterest> getAllPoints(Context c,LocationManager loc) throws SQLiteException{
+	public static ArrayList<PointOfInterest> getAllPoints(Context c,LocationManager loc) throws SQLiteException, MalformedURLException{
 
 		LocDBHelper ldb = LocDBHelper.getDBInstance(c);
 		try {

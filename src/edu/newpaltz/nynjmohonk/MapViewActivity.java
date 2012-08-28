@@ -1,7 +1,7 @@
 package edu.newpaltz.nynjmohonk;
 //Jon Davin
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -24,6 +24,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 
+
+
 /**
  * This activity is called from our Main Menu activity and it displays the map, updating the 
  * user's location from GPS and generally responding to any events that deal with the map *
@@ -42,7 +44,15 @@ public class MapViewActivity extends Activity {
 	private Bitmap mapBitmap;
 	private boolean willCenter = false;
 	private Context myContext;
-	
+	public static AlertDialog alert;
+	public static WebView webview;
+	private static int ERad;
+	private static PointOfInterest pointStore[];
+	private Thread pointCheck,pointCheck2,alertRunner;
+	private String pointName,activePointName1,activePointName2 = null;
+	private boolean bkgrdRun = false;
+
+
 
 	/**
 	 * Sets up the content view to be the map layout. Turns on the compass and links it to the map. Pulls the map
@@ -56,6 +66,11 @@ public class MapViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		myContext = this.getApplicationContext();
 		System.loadLibrary("bitmap");
+		ERad = 6371000;
+		pointStore = LocDBHelper.getPointStore();
+		pointCheck = new Thread(checkPoints);
+		pointCheck2 = new Thread(checkPoints);
+		alertRunner = new Thread(poiAlert);
 
 		// Show the map view
 		setContentView(R.layout.map_layout);
@@ -108,7 +123,6 @@ public class MapViewActivity extends Activity {
 					finish();
 				}	
 			});
-
 
 			// Turn on the location updating
 			turnOnLocation();
@@ -223,65 +237,31 @@ public class MapViewActivity extends Activity {
 
 		MyApplication.currentMap = myMap.getName();
 		// point of interest generator  call and generation
-		final ArrayList<PointOfInterest> POIs = 
-			PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);
+		PointOfInterest.getAllPoints(MapViewActivity.this,locationManager);
+
 		Log.v("MapViewActivity", "POIs generated");
-		//get current map filename
-
-		final ArrayList<NoteBuilder> Note = NoteBuilder.getAllNotes(MapViewActivity.this);
-
-		Log.v("MapViewActivity","Notes generated");
-
-
 
 		// Define a location listener and the events that go with it    
 		locationListener = new LocationListener() {
 
 			public void onLocationChanged(Location location) {
+				pointCheck.start();
 				if(d != null && d.isShowing()) {
 					d.hide();
 					d.dismiss();
 					// Center on the first point
 					willCenter = true;
 				}
-
-
-
 				double longitude = location.getLongitude();
 				double latitude = location.getLatitude();
-				/*
-				 *  double longitude = 0;
-				double latitude = 0;
-				double aveLat = 0;
-				double aveLong = 0;
-				double cumLat = 0;
-				double cumLong = 0;
-				int i = 0;
-				while(i<5){
-					i++;
-					longitude = location.getLongitude();
-					latitude = location.getLatitude();
-					cumLong +=longitude;
-					cumLat +=latitude;
 
-				}
-				aveLong = cumLong/i;
-				aveLat = cumLat/i;
-				i=0;
-				 */
 				if(location.hasBearing()) {
 					myMapView.setBearing(location.getBearing());
 				}
-				// In this method we want to update our image to reflect the change in location
-
-				/*
-				 * curLatitude = aveLat;
-				curLongitude = aveLong;
-				updateMapLocation(aveLong, aveLat); 
-				 */
 				curLatitude = latitude;
 				curLongitude = longitude;
 				updateMapLocation(longitude, latitude);
+
 
 
 			}
@@ -294,10 +274,119 @@ public class MapViewActivity extends Activity {
 		};
 
 		// Link the location listener to the location manager
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 8000, 15, locationListener);
+
 	}
 
-	
+
+	private Runnable checkPoints = new Runnable(){
+
+		public void run() {
+			for(int i =0;i<pointStore.length;i++){
+				if(calcDistance(curLatitude,curLongitude,pointStore[i].getLat(),pointStore[i].getLong())<=pointStore[i].getRadius()+.5){
+					if(pointStore[i].getCurrLoc()==true){
+
+					}else{
+						pointStore[i].setCurrLoc(true);
+						if(bkgrdRun==false){
+							activePointName1= pointStore[i].getLocName();
+						}else{
+							activePointName2= pointStore[i].getLocName();
+						}
+						alertRunner.start();
+						pointCheck.suspend();
+						bkgrdRun=true;
+						pointCheck2.start();
+
+						//this is where the alert dialog will be customized to the location and then prompted to display(.show())
+
+					}
+				}else{
+					if(pointStore[i].getCurrLoc()==true){
+						pointStore[i].setCurrLoc(false);
+					}
+				}
+			}
+		}
+	};
+
+	// Change the long_info URLs to reflect HTML files stored in the resources folder used saved pages to provide the additional info
+	private Runnable poiAlert = new Runnable(){
+		public void run(){
+
+			if(bkgrdRun==false){
+				pointName=activePointName1;
+			}else{
+				pointName=activePointName2;
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(ProxyAlertReceiver.myContext) ;
+			try{
+				Log.v("PAR","Making info choice box");
+				builder.setTitle("Point of Interest").setMessage(""+LocDBHelper.getPointByName(pointStore,pointName).getShortInfo())
+				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						Log.v("PAR","OK button clicked");
+						alert.dismiss();
+					}
+				}).setPositiveButton("More info", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						Log.v("PAR","More info button clicked");
+
+						webview = new WebView(myContext);
+						webview.getSettings().setJavaScriptEnabled(true);
+						webview.setWebViewClient(new WebViewClient(){
+							public void onReceivedError(WebView web, int errorCode,String description, String failedURL){
+								Toast.makeText(myContext,description,Toast.LENGTH_SHORT).show();
+							}
+						});
+						try{
+							Log.v("PAR","Page launching");
+							webview.loadUrl(""+LocDBHelper.getPointByName(pointStore,pointName).getLongInfo()); 
+							Log.v("PAR","Page launched");
+						}catch(Exception e){
+							Log.v("PAR","Page died");
+							System.err.println(e);
+						}
+					}
+				});						
+
+			}catch(Exception e){
+				System.err.println(e);
+			}
+
+			alert = builder.create();
+			alert.show();
+			pointName=null;
+			alertRunner.stop();
+			pointCheck2.stop();
+			bkgrdRun=false;
+			pointCheck.resume();
+
+		}
+	};
+
+
+	public static double calcDistance(double curLat, double curLong, double pointLat, double pointLong){
+		double distance;
+
+		// ERad  var R = 6371; // km
+		double dLat = Math.toRadians(pointLat-curLat);
+		double dLon = Math.toRadians(pointLong-curLong);
+		double lat1 = Math.toRadians(curLat);
+		double lat2 = Math.toRadians(pointLat);
+
+
+		double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+		Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		distance = ERad * c;
+
+		return distance;
+	}
+
 	/**
 	 * Calculate the pixel point based on the given longitude and latitude. Uses information from the world
 	 * file given by ArcGIS and from other values calculated at the start of the activity

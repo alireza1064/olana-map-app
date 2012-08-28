@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.newpaltz.nynjmohonk"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" >
+    </uses-permission>
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="8" >
+    </uses-sdk>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+
+    <application
+        android:name="MyApplication"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".SplashScreen"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".ProxyAlertReceiver" android:enabled="true" >
+            <intent-filter>
+                <action android:name="entering"></action>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".MainMenu"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="edu.newpaltz.nynjmohonk.MainMenu" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MapViewActivity"
+            android:configChanges="orientation" >
+        </activity>
+        <activity
+            android:name="DownloadMapsActivity"
+            android:configChanges="orientation" >
+        </activity>
+        <activity
+            android:name="Support"
+            android:configChanges="orientation" >
+        </activity>
+        <activity
+            android:name="Information"
+            android:configChanges="orientation" >
+        </activity>
+    </application>
+
+</manifest>

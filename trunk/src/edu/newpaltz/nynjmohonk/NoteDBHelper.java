@@ -243,7 +243,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
 				results.add(n);
 			//	NoteStore[t]=n;
 				
-				Log.v("NOTE","Note"+t+" Gereated and stored");
+				Log.v("NOTE","Note "+t+" Gereated and stored");
 				t++;
 			} while(c.moveToNext());
 		}

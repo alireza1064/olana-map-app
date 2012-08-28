@@ -39,10 +39,10 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	private final Context myContext;
 	private SQLiteDatabase myDatabase;	
 	private static LocDBHelper myDBConnection;
-	//private static String proxStore[];
-	//private static PointOfInterest[] POIStore;
+	private static PointOfInterest pointStore[];
 	private PointOfInterest p;
-	
+	private Intent intent = new Intent();
+
 	/**
 	 * Generate a MapDatabaseHelper instance within the context of this application. Also sets the path
 	 * to the SQLite database file based on the application context
@@ -65,7 +65,22 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		}
 		return myDBConnection;
 	}
-	
+
+
+	public static PointOfInterest[] getPointStore(){
+		return pointStore;
+	}
+
+	public static PointOfInterest getPointByName(PointOfInterest[] POI, String name){
+		for(int i = 0;i<POI.length;i++){
+			if(POI[i].getLocName().equals(name)){
+				return POI[i];
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * Copies the database to the phone, if needed. If there are any errors in copying the database, such as writing
 	 * to the phone, an IOException is thrown.
@@ -84,7 +99,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * Setup database folders
 	 */
@@ -92,7 +107,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		boolean dbExist = databaseExists();
 		if(!dbExist) this.getReadableDatabase();
 	}
-	
+
 	/**
 	 * Checks if the database has already been copied to the phone's local filesystem
 	 * @return True if the database is already copied and false otherwise
@@ -103,23 +118,23 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		return dbFile.exists();
 		/*
 		SQLiteDatabase checkDB = null;
-		
+
 		try {
-			
+
 			//checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 		} catch (SQLiteException e) {
 			// database does not yet exist
 			//this.setupDatabase();
 		}
-		
+
 		if(checkDB != null) {
 			checkDB.close();
 		}
-		
+
 		return checkDB != null;
-		*/
+		 */
 	}
-	
+
 	/**
 	 * Does the actual database copy, from reading the file in our assets to writing each by to our
 	 * new file that is stored on the phone. If there are any errors reading/writing, an IOException
@@ -135,12 +150,12 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		while ((length = myInput.read(buffer)) > 0) {
 			myOutput.write(buffer, 0, length);
 		}
-		
+
 		myOutput.flush();
 		myOutput.close();
 		myInput.close();
 	}
-	
+
 	/**
 	 * Reads the database from the phone
 	 * @throws IOException
@@ -149,7 +164,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 		String myPath = DB_PATH + DB_NAME;
 		myDatabase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 	}
-	
+
 	/**
 	 * Closes the connection to the SQLite database
 	 */
@@ -172,47 +187,52 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
-	
-	
+
+
 	/**
 	 * Gets, creates and sets the data of the points of interest and 
 	 * then generates a proximity alert based on that data
 	 * @param query The SQL SELECT query on the Map table
 	 * @param selectionArgs A list of selection arguments, if applicable
 	 * @param a location manager to generate the proximity alerts
+	 * @throws MalformedURLException 
 	 */
-	
-	public ArrayList<PointOfInterest> generatePoints(String query, String[] selectionArgs, LocationManager loc) {
-		Intent intent = new Intent();
+
+	public ArrayList<PointOfInterest> generatePoints(String query, String[] selectionArgs, LocationManager loc) throws MalformedURLException {
+
 		//query = "SELECT * FROM NPC_locs";
 		ArrayList<PointOfInterest> results = new ArrayList<PointOfInterest>();
 		//proxStore = new String[128];
-		int pendIntFlag = 1073741824;  // indicated single usage only!
+		//int pendIntFlag = 1073741824;  // indicated single usage only!
 		int t = 0;
 		Cursor c = myDatabase.rawQuery(query, selectionArgs);
 		if(c.moveToFirst()) {
 			do {
-				 p = new PointOfInterest(myContext);
-				for(int i = 0; i < c.getColumnCount(); i++) {
-					if(c.getString(i) != null) {
-						if(i ==2 || i==3) {
-							// For longitude values we want to use getDouble() to preserve accuracy
-							p.setVal(i, c.getDouble(i));
-						} else if(i == 0 || i == 4) {
-							p.setVal(i, c.getInt(i));
-						} else if(i==1){
-							p.setVal(i, c.getString(i));
-						}else{
-							//do nothing
+				p = new PointOfInterest(myContext);
+				
+					for(int i = 0; i < c.getColumnCount(); i++) {
+						if(c.getString(i) != null) {
+							if(i ==2 || i==3) {
+								// For longitude values we want to use getDouble() to preserve accuracy
+								p.setVal(i, c.getDouble(i));
+							} else if(i == 0 || i == 4) {
+								p.setVal(i, c.getInt(i));
+							} else if(i==1||i==5||i==6||i==7){
+								p.setVal(i, c.getString(i));
+							}else {
+								//do nothing
+							}
 						}
+						
 					}
-				}
-				//POIStore[t] = p;
-				//proxStore[t] = 
-				addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName());
+					pointStore[t]= p;
+
+				
+
+				//addProxyAlert(loc,p.getLat(),p.getLong(),p.getRadius(),myContext, pendIntFlag,p.getLocName());
 				t++;
 				Log.v("POI","POI and Proxy point"+t+" genereated");
-				
+
 				results.add(p);
 			} while(c.moveToNext());
 		}
@@ -224,33 +244,33 @@ public class LocDBHelper extends SQLiteOpenHelper {
 	//THIS MIGHT NEED TO BE CHANGED!!! specifically the intent sections
 	public static void addProxyAlert(LocationManager loc, double lat, double longe, 
 			int radius,Context c, int flag, String loc_name){
-		
+
 		loc.addProximityAlert(lat, longe, radius, -1, PendingIntent.getBroadcast(
 				c, 0, new Intent(c,ProxyAlertReceiver.class).putExtra(loc_name, loc_name), flag));
-		
+
 		Log.v("POI","Proxy alert successfuly created");
-		
+
 		//return ""+timeActivated+";"+loc_name+";"+lat+";"+longe+";"+radius;
 	}
-	
+
 	//public static PointOfInterest[] getPOIStore(){
 	//	return /;
 	//}
-	
+
 	//public static String[] getProxStore(){
 	//	return proxStore;
 	//}
-	
+
 	private static int dbLoadState = 0;
 
-	
+
 	/**
 	 * Return the current load state of the database
 	 */
 	public static int getLoadState() {
 		return dbLoadState;
 	}
-	
+
 	/**
 	 * Download the database from a hardcoded URL location so that we can have the most up-to-date map files
 	 */
@@ -269,7 +289,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			dbLoadState = 2; // error loading/downloading image
 			return;
 		}
-		
+
 		// Download the image from the URL given
 		try {
 			httpRequest = new HttpGet(myURL.toURI());
@@ -277,7 +297,7 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			dbLoadState = 2;
 			return;
 		}
-				
+
 		try {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = (HttpResponse)httpClient.execute(httpRequest);
@@ -287,44 +307,44 @@ public class LocDBHelper extends SQLiteOpenHelper {
 			int nRead;
 
 			LocDBHelper ldb = LocDBHelper.getDBInstance(c);
-	        ldb.setupDatabase();
-	
+			ldb.setupDatabase();
+
 			FileOutputStream f = new FileOutputStream(dbFilename + ".tmp");
-			
+
 			// Write out to a file, make sure to encrypt the first bit of the file
 			byte[] data = new byte[16384];
 			while((nRead = instream.read(data, 0, data.length)) != -1) {
 				f.write(data, 0, nRead);
 			}
-			
+
 			f.flush();
 			f.close();
 			instream.close();
-        
+
 		} catch (Exception exp) {
 			dbLoadState = 2;
 			return; // Exit here - don't try to write invalid/no data to phone
 		}	
-		
+
 		// If we have reached this point, we can assume the database downloaded correctly (right?)
 		// So we can overwrite the old database with the new database
-		
+
 		// Delete the old database (if it exists)
 		File f = new File(dbFilename);
 		if(f.exists()) {
 			f.delete();
 		}
-		
-	
+
+
 		// Move the new database
 		f = new File(dbFilename + ".tmp");
 		if(f.exists()) {
 			f.renameTo(new File(dbFilename));
 		}
-	
-		
+
+
 		dbLoadState = 1;
-		
+
 	}
-	
+
 }
